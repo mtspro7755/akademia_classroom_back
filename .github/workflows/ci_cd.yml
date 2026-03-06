@@ -72,7 +72,7 @@ jobs:
           port: '65002'
 
           script: |
-            cd /var/www/laravel-app
+            cd /home/u448716530
 
             git pull origin main
 
