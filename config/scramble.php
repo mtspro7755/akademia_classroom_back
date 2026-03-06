@@ -89,7 +89,10 @@ return [
      * ],
      * ```
      */
-    'servers' => null,
+    /*'servers' => null,*/
+    'servers' => [
+        'Production' => 'https://classroom.terangacode.com/api',
+    ],
 
     /**
      * Determines how Scramble stores the descriptions of enum cases.
