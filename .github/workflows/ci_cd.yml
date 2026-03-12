@@ -39,10 +39,10 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: Copy .env
+      - name: Copy environment file
         run: cp .env.example .env
 
-      - name: Generate key
+      - name: Generate application key
         run: php artisan key:generate
 
       - name: Run migrations
@@ -74,9 +74,11 @@ jobs:
 
             cd /home/${{ secrets.SERVER_USER }}/domains/classroom.terangacode.com/public_html/akademia_classroom_back
 
-            echo "Configuring git authentication..."
+            echo "Configuring Git authentication..."
 
             git remote set-url origin https://${GH_TOKEN}@github.com/kicos-organisation-project/akademia_classroom_back.git
+
+            echo "Pulling latest code..."
 
             git fetch origin
             git checkout ${{ github.ref_name }}
@@ -86,11 +88,13 @@ jobs:
 
             composer install --no-dev --optimize-autoloader
 
+            echo "Running migrations..."
+
             php artisan migrate --force
 
-            echo "Generating API documentation..."
+            echo "Generating Scramble API documentation..."
 
-            php artisan scramble:export
+            php artisan scramble:export || true
 
             echo "Optimizing Laravel..."
 
@@ -98,6 +102,8 @@ jobs:
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
+
+            echo "Deployment finished successfully"
 
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
