@@ -78,6 +78,11 @@ jobs:
 
             git remote set-url origin https://${GH_TOKEN}@github.com/kicos-organisation-project/akademia_classroom_back.git
 
+            echo "Reset local changes..."
+
+            git reset --hard
+            git clean -fd
+
             echo "Pulling latest code..."
 
             git fetch origin
