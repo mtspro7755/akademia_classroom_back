@@ -67,7 +67,7 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
 
           script: |
-            cd /home/u448716530/akademia_classroom_back
+            cd /home/u448716530/domains/classroom.terangacode.com/public_html/akademia_classroom_back
 
             git fetch origin
             git checkout develop
