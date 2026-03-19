@@ -3,22 +3,33 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 
 class LoginController extends Controller
 {
-    public function Login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validated();
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Identifiants invalides'], 401);
+            return response()->json([
+                'message' => 'Identifiants invalides'
+            ], 401);
+        }
+
+        $user = auth()->user();
+
+        if (!$user->statutCompte) {
+            return response()->json([
+                'message' => 'Compte bloqué'
+            ], 403);
         }
 
         return $this->respondWithToken($token);
     }
 
-    protected function respondWithToken($token){
+    protected function respondWithToken($token)
+    {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',

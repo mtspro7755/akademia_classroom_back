@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Apprenant extends Authenticatable implements JWTSubject
 {
     use Notifiable, CanResetPassword;
+
     protected $fillable =[
         'nomComplet',
         'email',
@@ -22,6 +23,10 @@ class Apprenant extends Authenticatable implements JWTSubject
 
     protected $hidden = [
         'password'
+    ];
+
+    protected $casts = [
+        'statutCompte' => 'boolean',
     ];
 
     public function getJWTIdentifier()
