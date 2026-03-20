@@ -11,14 +11,15 @@ class Apprenant extends Authenticatable implements JWTSubject
 {
     use Notifiable, CanResetPassword;
 
-    protected $fillable =[
+    protected $fillable = [
         'nomComplet',
         'email',
         'phone',
         'password',
         'pseudo',
         'role',
-        'statutCompte'
+        'statutCompte',
+        'profil_id'
     ];
 
     protected $hidden = [
@@ -28,6 +29,11 @@ class Apprenant extends Authenticatable implements JWTSubject
     protected $casts = [
         'statutCompte' => 'boolean',
     ];
+
+    public function profil()
+    {
+        return $this->belongsTo(Profil::class);
+    }
 
     public function getJWTIdentifier()
     {

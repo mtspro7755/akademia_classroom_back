@@ -20,8 +20,10 @@ return new class extends Migration
             $table->string('pseudo')->unique();
             $table->string('role');
             $table->boolean('statutCompte')->default(true);
+            $table->foreignId('profil_id')->constrained();
             $table->timestamps();
         });
+
     }
 
     /**
