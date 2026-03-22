@@ -6,8 +6,9 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Filament\Models\Contracts\HasName;
 
-class Apprenant extends Authenticatable implements JWTSubject
+class Apprenant extends Authenticatable implements JWTSubject, HasName
 {
     use Notifiable, CanResetPassword;
 
@@ -84,5 +85,15 @@ class Apprenant extends Authenticatable implements JWTSubject
                 $apprenant->pseudo = $base . '_' . substr(uniqid(), -6);
             }
         });
+    }
+
+    public function getFilamentName(): string
+    {
+        return $this->nomComplet ?? 'Admin' ;
+    }
+
+    public function canAccessPanel(\Filament\Panel $panel): bool
+    {
+        return $this->role === 'admin' && $this->statutCompte;
     }
 }

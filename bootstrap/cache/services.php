@@ -51,6 +51,7 @@
     47 => 'Tymon\\JWTAuth\\Providers\\LaravelServiceProvider',
     48 => 'App\\Providers\\AppServiceProvider',
     49 => 'App\\Providers\\AuthServiceProvider',
+    50 => 'App\\Providers\\Filament\\AdminPanelProvider',
   ),
   'eager' => 
   array (
@@ -89,6 +90,7 @@
     32 => 'Tymon\\JWTAuth\\Providers\\LaravelServiceProvider',
     33 => 'App\\Providers\\AppServiceProvider',
     34 => 'App\\Providers\\AuthServiceProvider',
+    35 => 'App\\Providers\\Filament\\AdminPanelProvider',
   ),
   'deferred' => 
   array (
