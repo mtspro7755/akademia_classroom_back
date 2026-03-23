@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Activite extends Model
 {
@@ -35,5 +36,12 @@ class Activite extends Model
     public function questions()
     {
         return $this->hasMany(Question::class);
+    }
+
+    public function Ressources(): BelongsToMany
+    {
+        return $this->belongsToMany(Ressource::class, 'activite_ressources')
+            ->withPivot('type')
+            ->withTimestamps();
     }
 }
