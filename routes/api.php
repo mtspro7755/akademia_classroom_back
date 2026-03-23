@@ -15,9 +15,13 @@ Route::post('reset-password',[ResetPasswordController::class, 'reset'])->name('p
 
 
 Route::middleware('auth:api')->group(function () {
+
     Route::middleware('can:manage-users')->group(function() {
-       Route::post('/users/{id}/block',[UserController::class, 'block']);
-       Route::post('/users/{id}/unblock',[UserController::class, 'unblock']);
-       Route::delete('/users/{id}',[UserController::class, 'destroy']);
+
+        Route::post('/users/{user}/block', [UserController::class, 'block']);
+        Route::post('/users/{user}/unblock', [UserController::class, 'unblock']);
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
+
     });
+
 });
