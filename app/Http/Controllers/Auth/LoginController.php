@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LoginController extends Controller
 {
@@ -36,5 +38,20 @@ class LoginController extends Controller
             'expires_in' => auth()->factory()->getTTL() * 60,
             'apprenant' => auth()->user()
         ]);
+    }
+
+
+    public function logout(){
+        try{
+            JWTAuth::invalidate(JWTAuth::getToken());
+
+            return response()->json([
+                'message' => 'Déconnexion réussie'
+            ]);
+        }catch(\Exception $e){
+            return response()->json([
+                'error' => 'Impossible de se déconnecter'
+            ],500);
+        }
     }
 }
