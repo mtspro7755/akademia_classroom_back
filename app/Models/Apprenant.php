@@ -96,4 +96,9 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
     {
         return $this->role === 'admin' && $this->statutCompte;
     }
+
+    public function scopeFormateurs($query)
+    {
+        return $query->where('role', 'formateur');
+    }
 }

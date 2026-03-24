@@ -36,4 +36,14 @@ class UserController extends Controller
             'message' => 'Utilisateur supprimé avec succès.'
         ]);
     }
+
+    public function index()
+    {
+        return response()->json([Apprenant::all()]);
+    }
+
+    public function show(Apprenant $user)
+    {
+        return response()->json([$user]);
+    }
 }
