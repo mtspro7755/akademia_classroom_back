@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\FormateurController;
+use App\Http\Controllers\ParcourFormationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -38,5 +39,16 @@ Route::middleware('auth:api')->group(function () {
 
     Route::put('/profile/info',[ProfileController::class, 'updateInfo']);
     Route::put('/profile/password',[ProfileController::class, 'changePassword']);
+
+    Route::get('/parcoursFormation',[ParcourFormationController::class, 'indexParcoursFormation']);
+    Route::post('/parcoursFormation', [ParcourFormationController::class, 'storeParcoursFormation']);
+    Route::get('/parcoursFormation/{parcoursFormation}', [ParcourFormationController::class, 'showParcoursFormation']);
+    Route::put('/parcoursFormation/{parcoursFormation}', [ParcourFormationController::class, 'updateParcoursFormation']);
+    Route::delete('/parcoursFormation/{parcoursFormation}', [ParcourFormationController::class, 'deleteParcoursFormation']);
+
+
+    Route::get('/parcoursFormation/{parcoursFormation}/quetes', [ParcourFormationController::class, 'getQuetes']);
+    Route::get('/my-parcours', [ParcourFormationController::class, 'getMyParcoursFormation']);
+
 
 });
