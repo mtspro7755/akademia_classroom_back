@@ -44,4 +44,9 @@ class Activite extends Model
             ->withPivot('type')
             ->withTimestamps();
     }
+
+    public function actives()
+    {
+        return Quete::where('statut', 'Actif')->get();
+    }
 }

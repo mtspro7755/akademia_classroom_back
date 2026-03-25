@@ -8,6 +8,7 @@ use App\Http\Controllers\CohorteController;
 use App\Http\Controllers\FormateurController;
 use App\Http\Controllers\ParcourFormationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QueteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -66,6 +67,13 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/cohortes/{cohorte}', [CohorteController::class, 'destroy']);
     Route::get('/cohortes/{cohorte}', [CohorteController::class, 'show']);
     Route::get('/cohortes', [CohorteController::class, 'index']);
+
+    Route::post('/quetes', [QueteController::class, 'store']);
+    Route::put('/quetes/{quete}', [QueteController::class, 'update']);
+    Route::delete('/quetes/{quete}', [QueteController::class, 'destroy']);
+    Route::get('/quetes/{quete}', [QueteController::class, 'show']);
+    Route::get('/quetes', [QueteController::class, 'index']);
+    Route::get('/quetes/etudiants', [QueteController::class, 'getQuetesByEtudiant']);
 
 
 
