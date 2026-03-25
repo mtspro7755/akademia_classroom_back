@@ -26,7 +26,6 @@ class RegisterRequest extends FormRequest
             'phone' => 'required|string|max:9',
             'email' => 'required|email|unique:apprenants,email',
             'password' => 'required|min:6',
-            'pseudo' => 'required|string|unique:apprenants,pseudo',
             'profil_id' => 'required|exists:profils,id',
         ];
     }
@@ -46,9 +45,6 @@ class RegisterRequest extends FormRequest
 
             'password.required' => 'Le mot de passe est obligatoire.',
             'password.min' => 'Le mot de passe doit contenir au moins 6 caractères.',
-
-            'pseudo.required' => 'Le pseudo est obligatoire.',
-            'pseudo.unique' => 'Ce pseudo est déjà pris.',
 
             'profil_id.required' => 'Le profil est obligatoire.',
             'profil_id.exists' => 'Le profil n\'existe pas.',

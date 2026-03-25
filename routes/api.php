@@ -16,6 +16,7 @@ Route::post('reset-password',[ResetPasswordController::class, 'reset'])->name('p
 
 Route::middleware('auth:api')->group(function () {
 
+    Route::post('logout',[LoginController::class, 'logout']);
     Route::middleware('can:manage-users')->group(function() {
 
         Route::post('/users/{user}/block', [UserController::class, 'block']);

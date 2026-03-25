@@ -74,4 +74,15 @@ class Apprenant extends Authenticatable implements JWTSubject
             'pseudo' => $this->pseudo
         ];
     }
+
+
+    protected static function booted(): void
+    {
+        static::creating(function ($apprenant) {
+            if (!$apprenant->pseudo) {
+                $base = strtolower(preg_replace('/[^a-z0-9]/', '', $apprenant->nomComplet));
+                $apprenant->pseudo = $base . '_' . substr(uniqid(), -6);
+            }
+        });
+    }
 }
