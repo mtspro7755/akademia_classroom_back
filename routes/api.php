@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\CohorteController;
 use App\Http\Controllers\FormateurController;
 use App\Http\Controllers\ParcourFormationController;
 use App\Http\Controllers\ProfileController;
@@ -46,9 +47,26 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/parcoursFormation/{parcoursFormation}', [ParcourFormationController::class, 'updateParcoursFormation']);
     Route::delete('/parcoursFormation/{parcoursFormation}', [ParcourFormationController::class, 'deleteParcoursFormation']);
 
-
     Route::get('/parcoursFormation/{parcoursFormation}/quetes', [ParcourFormationController::class, 'getQuetes']);
     Route::get('/my-parcours', [ParcourFormationController::class, 'getMyParcoursFormation']);
+
+    Route::post('/cohortes/{cohorte}/formateur', [CohorteController::class, 'attribuerFormateur']);
+
+    Route::post('/cohortes/{cohorte}/ajouter', [CohorteController::class, 'ajouterEtudiant']);
+    Route::post('/cohortes/{cohorte}/retirer', [CohorteController::class, 'retirerEtudiant']);
+
+    Route::get('/cohortes/{cohorte}/utilisateurs', [CohorteController::class, 'utilisateurs']);
+
+    Route::post('/cohortes/{cohorte}/lancer', [CohorteController::class, 'lancer']);
+    Route::post('/cohortes/{cohorte}/archiver', [CohorteController::class, 'archiver']);
+    Route::post('/cohortes/{cohorte}/parcours', [CohorteController::class, 'associerParcours']);
+
+    Route::post('/cohortes', [CohorteController::class, 'store']);
+    Route::put('/cohortes/{cohorte}', [CohorteController::class, 'update']);
+    Route::delete('/cohortes/{cohorte}', [CohorteController::class, 'destroy']);
+    Route::get('/cohortes/{cohorte}', [CohorteController::class, 'show']);
+    Route::get('/cohortes', [CohorteController::class, 'index']);
+
 
 
 });

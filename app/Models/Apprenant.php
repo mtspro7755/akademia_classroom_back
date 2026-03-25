@@ -38,7 +38,7 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
 
     public function cohortes()
     {
-        return $this->belongsToMany(Cohorte::class, 'apprenant_cohorte');
+        return $this->belongsToMany(Cohorte::class, 'apprenant_cohorte','apprenant_id', 'cohorte_id');
     }
 
     public function penalites()
@@ -100,5 +100,10 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
     public function scopeFormateurs($query)
     {
         return $query->where('role', 'formateur');
+    }
+
+    public function scopeApprenants($query)
+    {
+        return $query->where('role', 'apprenant');
     }
 }
