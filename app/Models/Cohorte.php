@@ -17,7 +17,7 @@ class Cohorte extends Model
 
     public function parcoursFormation()
     {
-        return $this->belongsTo(ParcoursFormation::class);
+        return $this->belongsTo(ParcoursFormation::class,'parcours_formation_id');
     }
 
     public function apprenants()
