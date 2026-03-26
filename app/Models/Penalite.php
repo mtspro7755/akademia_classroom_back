@@ -18,4 +18,11 @@ class Penalite extends Model
     {
         return $this->belongsTo(Apprenant::class);
     }
+
+    public static function booted()
+    {
+        static::creating(function ($penalite) {
+           $penalite->penalite = $penalite->tempsDeRetard * 10;
+        });
+    }
 }
