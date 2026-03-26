@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CohorteController;
 use App\Http\Controllers\FormateurController;
 use App\Http\Controllers\ParcourFormationController;
+use App\Http\Controllers\PenaliteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QueteController;
 use App\Http\Controllers\ThematiqueController;
@@ -82,6 +83,6 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/thematiques/{thematique}', [ThematiqueController::class, 'show']);
     Route::get('/thematiques', [ThematiqueController::class, 'index']);
 
-
-
+    Route::apiResource('penalites', PenaliteController::class);
+    Route::get('apprenants/penalites', [PenaliteController::class, 'apprenantsAvecPenalites']);
 });
