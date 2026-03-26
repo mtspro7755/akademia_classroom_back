@@ -8,6 +8,7 @@ use App\Http\Controllers\CohorteController;
 use App\Http\Controllers\FormateurController;
 use App\Http\Controllers\ParcourFormationController;
 use App\Http\Controllers\PenaliteController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QueteController;
 use App\Http\Controllers\ThematiqueController;
@@ -85,4 +86,15 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('penalites', PenaliteController::class);
     Route::get('apprenants/penalites', [PenaliteController::class, 'apprenantsAvecPenalites']);
+
+    Route::apiResource('posts', PostController::class);
+    Route::post('posts/{post}/repondre', [PostController::class, 'repondre']);
+    Route::get('thematiques/{id}/posts', [PostController::class, 'postsByThematique']);
+    Route::get('mes-posts', [PostController::class, 'postsByUser']);
+
+    Route::apiResource('posts', PostController::class);
+    Route::post('posts/{post}/repondre', [PostController::class, 'repondre']);
+    Route::get('thematiques/{id}/posts', [PostController::class, 'postsByThematique']);
+    Route::get('mes-posts', [PostController::class, 'postsByUser']);
+
 });
