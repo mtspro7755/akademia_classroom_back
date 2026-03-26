@@ -9,6 +9,7 @@ use App\Http\Controllers\FormateurController;
 use App\Http\Controllers\ParcourFormationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\QueteController;
+use App\Http\Controllers\ThematiqueController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +75,12 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/quetes/{quete}', [QueteController::class, 'show']);
     Route::get('/quetes', [QueteController::class, 'index']);
     Route::get('/quetes/etudiants', [QueteController::class, 'getQuetesByEtudiant']);
+
+    Route::post('/thematiques', [ThematiqueController::class, 'store']);
+    Route::put('/thematiques/{thematique}', [ThematiqueController::class, 'update']);
+    Route::delete('/thematiques/{thematique}', [ThematiqueController::class, 'destroy']);
+    Route::get('/thematiques/{thematique}', [ThematiqueController::class, 'show']);
+    Route::get('/thematiques', [ThematiqueController::class, 'index']);
 
 
 
