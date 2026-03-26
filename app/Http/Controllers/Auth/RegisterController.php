@@ -20,7 +20,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
-            'profil_id' => $data['profil_id'],
+            'profil_id' => $data['profil_id'] ?? null,
             'role' => 'apprenant',
             'statutCompte' => true
         ]);
