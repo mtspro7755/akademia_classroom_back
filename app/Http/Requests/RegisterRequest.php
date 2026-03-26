@@ -26,7 +26,7 @@ class RegisterRequest extends FormRequest
             'phone' => 'required|string|max:9',
             'email' => 'required|email|unique:apprenants,email',
             'password' => 'required|min:6',
-            'profil_id' => 'required|exists:profils,id',
+            'profil_id' => 'nullable|exists:profils,id',
         ];
     }
 
