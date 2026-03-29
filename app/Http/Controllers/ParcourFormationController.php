@@ -4,68 +4,106 @@ namespace App\Http\Controllers;
 
 use App\Models\ParcoursFormation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Mockery\Exception;
 
 class ParcourFormationController extends Controller
 {
     public function indexParcoursFormation()
     {
-        return response()->json(ParcoursFormation::all());
+        try{
+            return response()->json(ParcoursFormation::all());
+        }catch (\Exception $e) {
+            Log::debug($e->getMessage());
+
+            return response()->json(['error' => 'Erreur'], 500);
+        }
     }
 
     public function showParcoursFormation(ParcoursFormation $parcoursFormation )
     {
-        return response()->json($parcoursFormation);
+        try{
+            return response()->json($parcoursFormation);
+        }catch (\Exception $e) {
+            return response()->json(['error' => 'Erreur'], 500);
+        }
     }
 
     public function storeParcoursFormation(Request $request)
     {
-        $parcoursFormation=ParcoursFormation::create([
-            'intitule' => $request->intitule
-        ]);
+        try {
+            $parcoursFormation=ParcoursFormation::create([
+                'intitule' => $request->intitule
+            ]);
 
-        return response()->json([
-            'succes'=>true,
-            'parcoursFormation' => $parcoursFormation
-        ], 201);
+            return response()->json([
+                'succes'=>true,
+                'parcoursFormation' => $parcoursFormation
+            ], 201);
+        }catch (\Exception $e) {
+            Log::debug($e->getMessage());
+            return response()->json(['error' => 'Erreur'], 500);
+        }
     }
 
     public function updateParcoursFormation(Request $request, ParcoursFormation $parcoursFormation)
     {
-        $parcoursFormation->update($request->all());
+        try {
+            $parcoursFormation->update($request->all());
 
-        return response()->json([
-            'succes'=>true,
-            'parcoursFormation' => $parcoursFormation
-        ]);
+            return response()->json([
+                'succes'=>true,
+                'parcoursFormation' => $parcoursFormation
+            ]);
+        }catch (\Exception $e) {
+            Log::debug($e->getMessage());
+            return response()->json(['error' => 'Erreur'], 500);
+        }
     }
 
     public function deleteParcoursFormation(ParcoursFormation $parcoursFormation)
     {
-        $parcoursFormation->delete();
-        return response()->json([
-            'succes'=>true,
-            'message'=> 'suppression du ParcoursFormation réussi'
-        ]);
+        try {
+            $parcoursFormation->delete();
+            return response()->json([
+                'succes'=>true,
+                'message'=> 'suppression du ParcoursFormation réussi'
+            ]);
+        }catch (\Exception $e) {
+            Log::debug($e->getMessage());
+            return response()->json(['error' => 'Erreur'], 500);
+        }
     }
 
     public function getMyParcoursFormation()
     {
-        $user = auth()->user();
+        try {
+            $user = auth()->user();
 
-        $cohorte = $user->cohortes()->with('parcours')->first();
+            $cohorte = $user->cohortes()->with('parcours')->first();
 
-        if (!$cohorte) {
-            return response()->json([
-                'message' => 'Aucune cohorte trouvée'
-            ], 404);
+            if (!$cohorte) {
+                return response()->json([
+                    'message' => 'Aucune cohorte trouvée'
+                ], 404);
+            }
+
+            return response()->json($cohorte->parcours);
+        }catch (\Exception $e) {
+            Log::debug($e->getMessage());
+
+            return response()->json(['error' => 'Erreur'], 500);
         }
-
-        return response()->json($cohorte->parcours);
 
     }
 
     public function getQuetes(ParcoursFormation $parcoursFormation)
     {
-        return response()->json($parcoursFormation->quetes);
+        try {
+            return response()->json($parcoursFormation->quetes);
+        }catch (\Exception $e) {
+            Log::debug($e->getMessage());
+            return response()->json(['error' => 'Erreur'], 500);
+        }
     }
 }
