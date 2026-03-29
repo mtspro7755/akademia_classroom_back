@@ -3,6 +3,13 @@
 use Dedoc\Scramble\Http\Middleware\RestrictedDocsAccess;
 
 return [
+    'security' => [
+        'with_user_auth' => [
+            'type' => 'http',
+            'scheme' => 'bearer',
+            'bearerFormat' => 'JWT',
+        ],
+    ],
     /*
      * Your API path. By default, all routes starting with this path will be added to the docs.
      * If you need to change this behavior, you can add your custom routes resolver using `Scramble::routes()`.
@@ -91,7 +98,7 @@ return [
      */
     /*'servers' => null,*/
     'servers' => [
-        'Production' => 'https://classroom.terangacode.com/api',
+        'Production' => 'https://classroom.terangacode.com/docs/api',
     ],
 
     /**
