@@ -98,7 +98,7 @@ return [
      */
     /*'servers' => null,*/
     'servers' => [
-        'Production' => 'https://classroom.terangacode.com/docs/api',
+        'Pré-production' => '/api',
     ],
 
     /**
