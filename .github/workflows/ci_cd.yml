@@ -71,38 +71,33 @@ jobs:
           envs: GH_TOKEN
 
           script: |
-
             cd /home/${{ secrets.SERVER_USER }}/domains/classroom.terangacode.com/public_html/akademia_classroom_back
 
             echo "Configuring Git authentication..."
-
             git remote set-url origin https://${GH_TOKEN}@github.com/kicos-organisation-project/akademia_classroom_back.git
 
             echo "Reset local changes..."
-
             git reset --hard
             git clean -fd
 
             echo "Pulling latest code..."
-
             git fetch origin
             git checkout ${{ github.ref_name }}
             git pull origin ${{ github.ref_name }}
 
             echo "Installing dependencies..."
-
             composer install --no-dev --optimize-autoloader
 
             echo "Running migrations..."
-
             php artisan migrate --force
 
             echo "Generating Scramble API documentation..."
-
             php artisan scramble:export || true
 
-            echo "Optimizing Laravel..."
+            echo "Publishing Filament assets..."
+            php artisan filament:assets
 
+            echo "Optimizing Laravel..."
             php artisan optimize:clear
             php artisan config:cache
             php artisan route:cache
