@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActiviteController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -96,5 +97,19 @@ Route::middleware('auth:api')->group(function () {
     Route::post('posts/{post}/repondre', [PostController::class, 'repondre']);
     Route::get('thematiques/{id}/posts', [PostController::class, 'postsByThematique']);
     Route::get('mes-posts', [PostController::class, 'postsByUser']);
+
+    Route::apiResource('activites', ActiviteController::class);
+    Route::get('quetes/{quete}/activites', [ActiviteController::class, 'getByQuete']);
+
+    Route::post('activites/{activite}/ressources', [ActiviteController::class, 'attachRessources']);
+    Route::delete('activites/{activite}/ressources/{ressource}', [ActiviteController::class, 'detachRessource']);
+
+    Route::post('activites/{activite}/questions', [ActiviteController::class, 'addQuestion']);
+    Route::post('activites/{activite}/criteres', [ActiviteController::class, 'addCritere']);
+
+    Route::post('activites/reorder', [ActiviteController::class, 'reorder']);
+    Route::patch('activites/{activite}/statut', [ActiviteController::class, 'changeStatut']);
+
+    Route::get('me/activites', [ActiviteController::class, 'myActivites']);
 
 });
