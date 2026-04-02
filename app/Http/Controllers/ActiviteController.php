@@ -187,47 +187,6 @@ class ActiviteController extends Controller
     }
 
 
-    public function addQuestion(Request $request, Activite $activite)
-    {
-        try {
-            $question = $activite->questions()->create([
-                'intitule' => $request->intitule
-            ]);
-
-            return response()->json([
-                'message' => 'Question ajoutée',
-                'data' => new QuestionResource($question)
-            ]);
-        }catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur ajout question'
-            ],500);
-        }
-    }
-
-    public function addCritere(Request $request, Activite $activite)
-    {
-        try {
-            $critere = $activite->criteres()->create([
-                'critere' => $request->critere,
-                'question' => $request->question,
-                'point' => $request->point
-            ]);
-
-            return response()->json([
-                'message' => 'Critère ajouté',
-                'data' => new CritereEvaluationResource($critere)
-            ]);
-        }catch (\Exception $e) {
-            Log::error($e->getMessage());
-            return response()->json([
-                'success' => false,
-                'message' => 'Erreur ajout critere'
-            ],500);
-        }
-    }
 
     public function reorder(Request $request)
     {

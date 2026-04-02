@@ -104,9 +104,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('activites/{activite}/ressources', [ActiviteController::class, 'attachRessources']);
     Route::delete('activites/{activite}/ressources/{ressource}', [ActiviteController::class, 'detachRessource']);
 
-    Route::post('activites/{activite}/questions', [ActiviteController::class, 'addQuestion']);
-    Route::post('activites/{activite}/criteres', [ActiviteController::class, 'addCritere']);
-
     Route::post('activites/reorder', [ActiviteController::class, 'reorder']);
     Route::patch('activites/{activite}/statut', [ActiviteController::class, 'changeStatut']);
 
