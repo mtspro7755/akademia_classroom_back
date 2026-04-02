@@ -38,7 +38,7 @@ class Activite extends Model
         return $this->hasMany(Question::class);
     }
 
-    public function Ressources(): BelongsToMany
+    public function ressources(): BelongsToMany
     {
         return $this->belongsToMany(Ressource::class, 'activite_ressources')
             ->withPivot('type')

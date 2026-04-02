@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\ApprenantResource;
 use App\Models\Apprenant;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -26,7 +27,7 @@ class FormateurController extends Controller
 
             return response()->json([
                 'message' => 'Compte créé avec succès',
-                'user'=>$formateur
+                'user' => new ApprenantResource($formateur)
             ], 201);
         }catch (\Exception $e){
             Log::debug($e->getMessage());
@@ -57,7 +58,7 @@ class FormateurController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Formateur mis à jour avec succès',
-                'data'    => $formateur
+                'data' => new ApprenantResource($formateur)
             ]);
         }catch (\Exception $e){
             Log::debug($e->getMessage());
@@ -67,16 +68,20 @@ class FormateurController extends Controller
 
     public function deleteFormateur(Apprenant $formateur)
     {
-        try{
+        try {
             if ($formateur->role !== 'formateur') {
                 return response()->json([
-                    'message' => 'Action impossible : cet utilisateur n\'est pas un formateur.'
+                    'message' => 'Action impossible'
                 ], 403);
             }
+
+            $formateur->delete();
+
             return response()->json([
                 'message' => 'Formateur supprimé avec succès'
             ]);
-        }catch (\Exception $e){
+
+        } catch (\Exception $e){
             Log::debug($e->getMessage());
             return response()->json(['error' => 'Erreur'], 500);
         }
@@ -94,7 +99,7 @@ class FormateurController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $formateur
+                'data' => new ApprenantResource($formateur)
             ]);
         }catch (\Exception $e){
             Log::debug($e->getMessage());
@@ -104,15 +109,15 @@ class FormateurController extends Controller
 
     public function indexFormateur()
     {
-       try{
-           return response()->json([
-               'success' => true,
-               'data' => Apprenant::formateurs()->get()
-           ]);
-       }catch (\Exception $e){
-           Log::debug($e->getMessage());
-           return response()->json(['error' => 'Erreur'], 500);
-       }
+        try {
+            $formateurs = Apprenant::formateurs()->get();
+
+            return ApprenantResource::collection($formateurs);
+
+        } catch (\Exception $e){
+            Log::debug($e->getMessage());
+            return response()->json(['error' => 'Erreur'], 500);
+        }
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ThematiqueResource;
 use App\Models\Thematique;
 use App\Http\Requests\ThematiqueRequest;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +16,7 @@ class ThematiqueController extends Controller
 
             return response()->json([
                 'success' => true,
-                'data' => $thematiques
+                'data' => ThematiqueResource::collection($thematiques)
             ]);
 
         } catch (\Exception $e) {
@@ -36,7 +37,7 @@ class ThematiqueController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Thématique créée',
-                'data' => $thematique
+                'data' => new ThematiqueResource($thematique)
             ], 201);
 
         } catch (\Exception $e) {
@@ -52,9 +53,11 @@ class ThematiqueController extends Controller
     public function show(Thematique $thematique)
     {
         try {
+            $thematique->load('posts');
+
             return response()->json([
                 'success' => true,
-                'data' => $thematique
+                'data' => new ThematiqueResource($thematique)
             ]);
 
         } catch (\Exception $e) {
@@ -75,7 +78,7 @@ class ThematiqueController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Thématique mise à jour',
-                'data' => $thematique
+                'data' => new ThematiqueResource($thematique)
             ]);
 
         } catch (\Exception $e) {

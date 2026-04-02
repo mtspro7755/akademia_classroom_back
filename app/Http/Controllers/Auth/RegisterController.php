@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\ApprenantResource;
 use App\Models\Apprenant;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -35,7 +36,7 @@ class RegisterController extends Controller
 
             return response()->json([
                 'message' => 'Compte créé avec succès',
-                'user' => $apprenant
+                'user' => new ApprenantResource($apprenant->load('profil'))
             ], 201);
         }catch (\Exception $e){
             Log::debug($e->getMessage());

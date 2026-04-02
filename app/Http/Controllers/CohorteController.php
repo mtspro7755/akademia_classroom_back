@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CohorteRequest;
+use App\Http\Resources\ApprenantResource;
+use App\Http\Resources\CohorteResource;
 use App\Models\Apprenant;
 use App\Models\Cohorte;
 use Illuminate\Http\Request;
@@ -17,9 +19,10 @@ class CohorteController extends Controller
 
             return response()->json([
                 'message' => 'Cohorte créée avec succès',
-                'data' => $cohorte
+                'data' => new CohorteResource($cohorte)
             ], 201);
-        }catch (\Exception $e){
+
+        } catch (\Exception $e){
             Log::debug($e->getMessage());
             return response()->json(['error' => 'Erreur'], 500);
         }
@@ -28,8 +31,14 @@ class CohorteController extends Controller
     public function show(Cohorte $cohorte)
     {
         try {
-            return response()->json([$cohorte]);
-        }catch (\Exception $e){
+            $cohorte->load([
+                'parcoursFormation',
+                'apprenants'
+            ]);
+
+            return new CohorteResource($cohorte);
+
+        } catch (\Exception $e){
             Log::debug($e->getMessage());
             return response()->json(['error' => 'Erreur'], 500);
         }
@@ -38,8 +47,13 @@ class CohorteController extends Controller
     public function index()
     {
         try {
-            return response()->json(Cohorte::all());
-        }catch (\Exception $e){
+            $cohortes = Cohorte::with([
+                'parcoursFormation'
+            ])->get();
+
+            return CohorteResource::collection($cohortes);
+
+        } catch (\Exception $e){
             Log::debug($e->getMessage());
             return response()->json(['error' => 'Erreur'], 500);
         }
@@ -53,9 +67,10 @@ class CohorteController extends Controller
 
             return response()->json([
                 'message' => 'Cohorte mise à jour',
-                'data' => $cohorte
+                'data' => new CohorteResource($cohorte)
             ]);
-        }catch (\Exception $e){
+
+        } catch (\Exception $e){
             Log::debug($e->getMessage());
             return response()->json(['error' => 'Erreur'], 500);
         }
@@ -124,7 +139,8 @@ class CohorteController extends Controller
             $cohorte->apprenants()->attach($etudiant->id);
 
             return response()->json([
-                'message' => 'Étudiant ajouté avec succès'
+                'message' => 'Étudiant ajouté avec succès',
+                'cohorte' => new CohorteResource($cohorte->load('apprenants'))
             ]);
         }catch (\Exception $e){
             Log::debug($e->getMessage());
@@ -150,11 +166,20 @@ class CohorteController extends Controller
     public function utilisateurs(Cohorte $cohorte)
     {
         try {
+            $formateur = $cohorte->apprenants()
+                ->where('role', 'formateur')
+                ->first();
+
+            $apprenants = $cohorte->apprenants()
+                ->where('role', 'apprenant')
+                ->get();
+
             return response()->json([
-                'formateur' => $cohorte->formateur,
-                'apprenants' => $cohorte->apprenants()->apprenants()->get()
+                'formateur' => $formateur ? new ApprenantResource($formateur) : null,
+                'apprenants' => ApprenantResource::collection($apprenants)
             ]);
-        }catch (\Exception $e){
+
+        } catch (\Exception $e){
             Log::debug($e->getMessage());
             return response()->json(['error' => 'Erreur'], 500);
         }

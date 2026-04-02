@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\QueteRequest;
+use App\Http\Resources\QueteResource;
 use App\Models\Quete;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -12,11 +13,11 @@ class QueteController extends Controller
     public function index()
     {
         try {
-            $quetes = Quete::all();
+            $quetes = Quete::with(['parcoursFormation'])->get();
 
             return response()->json([
                 'success' => true,
-                'data' => $quetes
+                'data' => QueteResource::collection($quetes)
             ]);
 
         } catch (\Exception $e) {
@@ -38,7 +39,7 @@ class QueteController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Quête créée avec succès',
-                'data' => $quete
+                'data' => new QueteResource($quete)
             ], 201);
 
         } catch (\Exception $e) {
@@ -55,9 +56,11 @@ class QueteController extends Controller
     public function show(Quete $quete)
     {
         try {
+            $quete->load(['parcoursFormation', 'activites']);
+
             return response()->json([
                 'success' => true,
-                'data' => $quete
+                'data' => new QueteResource($quete)
             ]);
 
         } catch (\Exception $e) {
@@ -79,7 +82,7 @@ class QueteController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Quête mise à jour',
-                'data' => $quete
+                'data' => new QueteResource($quete)
             ]);
 
         } catch (\Exception $e) {
@@ -129,12 +132,12 @@ class QueteController extends Controller
             $user = auth()->user();
 
             $quetes = $user->quetes()
-                ->with('parcoursFormation')
+                ->with(['parcoursFormation'])
                 ->get();
 
             return response()->json([
                 'success' => true,
-                'data' => $quetes
+                'data' => QueteResource::collection($quetes)
             ]);
 
         } catch (\Exception $e) {

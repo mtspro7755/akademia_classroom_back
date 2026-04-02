@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
+use App\Http\Resources\ApprenantResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
@@ -20,13 +21,13 @@ class ProfileController extends Controller
 
             return response()->json([
                 'message' => 'Profil mis à jour',
-                'user' => $user
+                'user' => new ApprenantResource($user)
             ]);
         }catch (\Exception $e) {
             Log::debug($e->getMessage());
-
             return response()->json(['error' => 'Erreur'], 500);
         }
+
     }
 
     public function changePassword(ProfileRequest $request){
