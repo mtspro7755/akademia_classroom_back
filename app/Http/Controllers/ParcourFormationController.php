@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ParcoursFormationResource;
+use App\Http\Resources\QueteResource;
 use App\Models\ParcoursFormation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -11,20 +13,31 @@ class ParcourFormationController extends Controller
 {
     public function indexParcoursFormation()
     {
-        try{
-            return response()->json(ParcoursFormation::all());
-        }catch (\Exception $e) {
-            Log::debug($e->getMessage());
+        try {
+            $parcours = ParcoursFormation::with([
+                'cohortes',
+                'quetes'
+            ])->get();
 
+            return ParcoursFormationResource::collection($parcours);
+
+        } catch (\Exception $e) {
+            Log::debug($e->getMessage());
             return response()->json(['error' => 'Erreur'], 500);
         }
     }
 
     public function showParcoursFormation(ParcoursFormation $parcoursFormation )
     {
-        try{
-            return response()->json($parcoursFormation);
-        }catch (\Exception $e) {
+        try {
+            $parcoursFormation->load([
+                'cohortes',
+                'quetes'
+            ]);
+
+            return new ParcoursFormationResource($parcoursFormation);
+
+        } catch (\Exception $e) {
             return response()->json(['error' => 'Erreur'], 500);
         }
     }
@@ -32,15 +45,16 @@ class ParcourFormationController extends Controller
     public function storeParcoursFormation(Request $request)
     {
         try {
-            $parcoursFormation=ParcoursFormation::create([
+            $parcoursFormation = ParcoursFormation::create([
                 'intitule' => $request->intitule
             ]);
 
             return response()->json([
-                'succes'=>true,
-                'parcoursFormation' => $parcoursFormation
+                'success' => true,
+                'data' => new ParcoursFormationResource($parcoursFormation)
             ], 201);
-        }catch (\Exception $e) {
+
+        } catch (\Exception $e) {
             Log::debug($e->getMessage());
             return response()->json(['error' => 'Erreur'], 500);
         }
@@ -52,10 +66,11 @@ class ParcourFormationController extends Controller
             $parcoursFormation->update($request->all());
 
             return response()->json([
-                'succes'=>true,
-                'parcoursFormation' => $parcoursFormation
+                'success' => true,
+                'data' => new ParcoursFormationResource($parcoursFormation)
             ]);
-        }catch (\Exception $e) {
+
+        } catch (\Exception $e) {
             Log::debug($e->getMessage());
             return response()->json(['error' => 'Erreur'], 500);
         }
@@ -80,7 +95,9 @@ class ParcourFormationController extends Controller
         try {
             $user = auth()->user();
 
-            $cohorte = $user->cohortes()->with('parcours')->first();
+            $cohorte = $user->cohortes()
+                ->with('parcoursFormation')
+                ->first();
 
             if (!$cohorte) {
                 return response()->json([
@@ -88,10 +105,12 @@ class ParcourFormationController extends Controller
                 ], 404);
             }
 
-            return response()->json($cohorte->parcours);
-        }catch (\Exception $e) {
-            Log::debug($e->getMessage());
+            return new ParcoursFormationResource(
+                $cohorte->parcoursFormation
+            );
 
+        } catch (\Exception $e) {
+            Log::debug($e->getMessage());
             return response()->json(['error' => 'Erreur'], 500);
         }
 
@@ -100,8 +119,11 @@ class ParcourFormationController extends Controller
     public function getQuetes(ParcoursFormation $parcoursFormation)
     {
         try {
-            return response()->json($parcoursFormation->quetes);
-        }catch (\Exception $e) {
+            $quetes = $parcoursFormation->quetes;
+
+            return QueteResource::collection($quetes);
+
+        } catch (\Exception $e) {
             Log::debug($e->getMessage());
             return response()->json(['error' => 'Erreur'], 500);
         }

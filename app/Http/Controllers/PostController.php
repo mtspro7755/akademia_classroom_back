@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequest;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -15,13 +16,13 @@ class PostController extends Controller
     public function index()
     {
         try {
-            $posts = Post::with(['apprenant', 'thematique'])->whereNull('parent_post_id')->get();
+            $posts = Post::with(['apprenant', 'thematique'])
+                ->whereNull('parent_post_id')
+                ->get();
 
-            return response()->json($posts);
-
+            return PostResource::collection($posts);
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
-
             return response()->json(['error' => 'Erreur récupération'], 500);
         }
     }
@@ -39,12 +40,11 @@ class PostController extends Controller
 
             return response()->json([
                 'message' => 'Post créé avec succès',
-                'data' => $post
+                'data' => new PostResource($post)
             ], 201);
 
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
-
             return response()->json(['error' => 'Erreur création post'], 500);
         }
     }
@@ -55,13 +55,12 @@ class PostController extends Controller
     public function show(Post $post)
     {
         try {
-            return response()->json(
-                $post->load(['apprenant', 'reponses.apprenant'])
-            );
+            $post->load(['apprenant', 'reponses.apprenant']);
+
+            return new PostResource($post);
 
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
-
             return response()->json(['error' => 'Erreur'], 500);
         }
     }
@@ -76,12 +75,11 @@ class PostController extends Controller
 
             return response()->json([
                 'message' => 'Post mis à jour',
-                'data' => $post
+                'data' => new PostResource($post)
             ]);
 
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
-
             return response()->json(['error' => 'Erreur update'], 500);
         }
     }
@@ -120,12 +118,11 @@ class PostController extends Controller
 
             return response()->json([
                 'message' => 'Réponse ajoutée',
-                'data' => $reponse
+                'data' => new PostResource($reponse)
             ], 201);
 
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
-
             return response()->json(['error' => 'Erreur réponse'], 500);
         }
     }
@@ -139,11 +136,10 @@ class PostController extends Controller
                 ->with('apprenant')
                 ->get();
 
-            return response()->json($posts);
+            return PostResource::collection($posts);
 
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
-
             return response()->json(['error' => 'Erreur'], 500);
         }
     }
@@ -152,13 +148,15 @@ class PostController extends Controller
     public function postsByUser()
     {
         try {
-            $posts = auth()->user()->posts()->with('thematique')->get();
+            $posts = auth()->user()
+                ->posts()
+                ->with('thematique')
+                ->get();
 
-            return response()->json($posts);
+            return PostResource::collection($posts);
 
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
-
             return response()->json(['error' => 'Erreur'], 500);
         }
     }

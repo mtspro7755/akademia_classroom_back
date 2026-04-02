@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PenaliteRequest;
+use App\Http\Resources\ApprenantResource;
+use App\Http\Resources\PenaliteResource;
 use App\Models\Apprenant;
 use App\Models\Penalite;
 use Illuminate\Http\Request;
@@ -18,10 +20,8 @@ class PenaliteController extends Controller
         try {
             $penalites = Penalite::with('apprenant')->get();
 
-            return response()->json([
-                'success' => true,
-                'data' => $penalites
-            ]);
+            return PenaliteResource::collection($penalites);
+
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
 
@@ -37,20 +37,19 @@ class PenaliteController extends Controller
     public function store(PenaliteRequest $request)
     {
         try {
-
             $penalite = Penalite::create($request->validated());
 
             return response()->json([
                 'success' => true,
                 'message' => 'Pénalité attribuée avec succès',
-                'data' => $penalite
+                'data' => new PenaliteResource($penalite)
             ], 201);
 
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
 
             return response()->json([
-                'error' => 'Erreur lors de la création de la pénalité'
+                'error' => 'Erreur lors de la création'
             ], 500);
         }
     }
@@ -61,15 +60,15 @@ class PenaliteController extends Controller
     public function show(Penalite $penalite)
     {
         try {
-            return response()->json([
-                'success' => true,
-                'data' => $penalite->load('apprenant')
-            ]);
+            $penalite->load('apprenant');
+
+            return new PenaliteResource($penalite);
+
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
 
             return response()->json([
-                'error' => 'Erreur lors de la récupération'
+                'error' => 'Erreur'
             ], 500);
         }
     }
@@ -85,7 +84,7 @@ class PenaliteController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Pénalité mise à jour',
-                'data' => $penalite
+                'data' => new PenaliteResource($penalite)
             ]);
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
@@ -124,15 +123,13 @@ class PenaliteController extends Controller
                 ->with('penalites')
                 ->get();
 
-            return response()->json([
-                'success' => true,
-                'data' => $apprenants
-            ]);
+            return ApprenantResource::collection($apprenants);
+
         } catch (\Exception $e) {
             Log::debug($e->getMessage());
 
             return response()->json([
-                'error' => 'Erreur lors de la récupération'
+                'error' => 'Erreur'
             ], 500);
         }
     }

@@ -11,7 +11,7 @@ class Ressource extends Model
         'type' => 'string',
     ];
 
-    public function Activites(): BelongsToMany
+    public function activites(): BelongsToMany
     {
         return $this->belongsToMany(Activite::class, 'activite_ressources')
             ->withPivot('type')

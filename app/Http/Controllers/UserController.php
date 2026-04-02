@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ApprenantResource;
 use App\Models\Apprenant;
 use Illuminate\Support\Facades\Log;
 
@@ -15,7 +16,8 @@ class UserController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Le compte de ' . $user->nomComplet . ' a été bloqué.'
+                'message' => 'Le compte de ' . $user->nomComplet . ' a été bloqué.',
+                'user' => new ApprenantResource($user)
             ]);
         }catch (\Exception $e) {
             Log::debug($e->getMessage());
@@ -32,7 +34,8 @@ class UserController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Le compte de ' . $user->nomComplet . ' a été débloqué.'
+                'message' => 'Le compte de ' . $user->nomComplet . ' a été débloqué.',
+                'user' => new ApprenantResource($user)
             ]);
         }catch (\Exception $e) {
             Log::debug($e->getMessage());
@@ -58,9 +61,16 @@ class UserController extends Controller
 
     public function index()
     {
-        try{
-            return response()->json([Apprenant::all()]);
-        }catch (\Exception $e) {
+        try {
+            $users = Apprenant::with([
+                'profil',
+                'cohortes',
+                'penalites'
+            ])->get();
+
+            return ApprenantResource::collection($users);
+
+        } catch (\Exception $e) {
             Log::debug($e->getMessage());
 
             return response()->json(['error' => 'Erreur'], 500);
@@ -69,9 +79,19 @@ class UserController extends Controller
 
     public function show(Apprenant $user)
     {
-        try{
-            return response()->json([$user]);
-        }catch (\Exception $e) {
+        try {
+            $user->load([
+                'profil',
+                'cohortes',
+                'penalites',
+                'posts',
+                'quetes',
+                'livrables'
+            ]);
+
+            return new ApprenantResource($user);
+
+        } catch (\Exception $e) {
             Log::debug($e->getMessage());
 
             return response()->json(['error' => 'Erreur'], 500);
