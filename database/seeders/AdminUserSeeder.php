@@ -16,7 +16,7 @@ class AdminUserSeeder extends Seeder
                 'nomComplet' => 'admin',
                 'phone' => '770000000',
                 'pseudo' => 'admin',
-                'password' => Hash::make('admin'),
+                'password' => Hash::make('admin123'),
                 'role' => 'admin',
                 'statutCompte' => true,
             ]
