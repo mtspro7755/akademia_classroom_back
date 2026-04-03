@@ -9,7 +9,8 @@ class CritereEvaluation extends Model
     protected $fillable = [
         'activite_id',
         'critere',
-        'question'
+        'question',
+        'point'
     ];
 
     public function activite()

@@ -9,7 +9,8 @@ class Livrable extends Model
     protected $fillable = [
         'apprenant_id',
         'activite_id',
-        'lien',
+        'lienDuRepertoire',
+        'lienDeploye',
         'typeLivrable',
         'statutCorrection',
         'dateSoumission',
