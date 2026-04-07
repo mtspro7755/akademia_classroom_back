@@ -6,6 +6,7 @@ use App\Filament\Resources\Apprenants\Pages\CreateApprenant;
 use App\Filament\Resources\Apprenants\Pages\EditApprenant;
 use App\Filament\Resources\Apprenants\Pages\ListApprenants;
 use App\Filament\Resources\Apprenants\Pages\ViewApprenant;
+use App\Filament\Resources\Apprenants\RelationManagers\PenalitesRelationManager;
 use App\Filament\Resources\Apprenants\Schemas\ApprenantForm;
 use App\Filament\Resources\Apprenants\Schemas\ApprenantInfolist;
 use App\Filament\Resources\Apprenants\Tables\ApprenantsTable;
@@ -23,6 +24,11 @@ class ApprenantResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'nomComplet';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Utilisateurs';
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -42,7 +48,7 @@ class ApprenantResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PenalitesRelationManager::class
         ];
     }
 

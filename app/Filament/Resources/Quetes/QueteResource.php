@@ -24,6 +24,11 @@ class QueteResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'titre';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Pédagogie';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return QueteForm::configure($schema);

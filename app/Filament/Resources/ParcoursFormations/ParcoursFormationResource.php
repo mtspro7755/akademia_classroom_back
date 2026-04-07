@@ -24,6 +24,11 @@ class ParcoursFormationResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'intitule';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Pédagogie';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return ParcoursFormationForm::configure($schema);

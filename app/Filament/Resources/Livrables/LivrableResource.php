@@ -6,6 +6,9 @@ use App\Filament\Resources\Livrables\Pages\CreateLivrable;
 use App\Filament\Resources\Livrables\Pages\EditLivrable;
 use App\Filament\Resources\Livrables\Pages\ListLivrables;
 use App\Filament\Resources\Livrables\Pages\ViewLivrable;
+use App\Filament\Resources\Livrables\RelationManagers\FeedbackRelationManager;
+use App\Filament\Resources\Livrables\RelationManagers\ReponsesQuestionsRelationManager;
+use App\Filament\Resources\Livrables\RelationManagers\ScoresRelationManager;
 use App\Filament\Resources\Livrables\Schemas\LivrableForm;
 use App\Filament\Resources\Livrables\Schemas\LivrableInfolist;
 use App\Filament\Resources\Livrables\Tables\LivrablesTable;
@@ -23,6 +26,11 @@ class LivrableResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'lienDuRepertoire';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Suivi';
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -42,7 +50,9 @@ class LivrableResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            FeedbackRelationManager::class,
+            ScoresRelationManager::class,
+            ReponsesQuestionsRelationManager::class,
         ];
     }
 

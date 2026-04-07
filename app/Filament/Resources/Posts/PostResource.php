@@ -24,6 +24,11 @@ class PostResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'contenu';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Communauté';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return PostForm::configure($schema);

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Apprenants\Schemas;
 
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
@@ -30,9 +31,12 @@ class ApprenantForm
                     ->required(),
                 Toggle::make('statutCompte')
                     ->required(),
-                TextInput::make('profil_id')
-                    ->numeric()
-                    ->default(null),
+                Select::make('profil_id')
+                    ->label('Profil')
+                    ->relationship('profil', 'typeProfil')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
             ]);
     }
 }
