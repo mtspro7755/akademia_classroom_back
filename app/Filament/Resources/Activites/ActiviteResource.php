@@ -6,6 +6,8 @@ use App\Filament\Resources\Activites\Pages\CreateActivite;
 use App\Filament\Resources\Activites\Pages\EditActivite;
 use App\Filament\Resources\Activites\Pages\ListActivites;
 use App\Filament\Resources\Activites\Pages\ViewActivite;
+use App\Filament\Resources\Activites\RelationManagers\CriteresRelationManager;
+use App\Filament\Resources\Activites\RelationManagers\RessourcesRelationManager;
 use App\Filament\Resources\Activites\Schemas\ActiviteForm;
 use App\Filament\Resources\Activites\Schemas\ActiviteInfolist;
 use App\Filament\Resources\Activites\Tables\ActivitesTable;
@@ -15,6 +17,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use App\Filament\Resources\Activites\RelationManagers\QuestionsRelationManager;
 
 class ActiviteResource extends Resource
 {
@@ -23,6 +26,11 @@ class ActiviteResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'titre';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Suivi';
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -42,7 +50,10 @@ class ActiviteResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            QuestionsRelationManager::class,
+            CriteresRelationManager::class,
+            RessourcesRelationManager::class,
+
         ];
     }
 

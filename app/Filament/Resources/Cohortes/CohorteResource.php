@@ -24,6 +24,11 @@ class CohorteResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'nom';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Pédagogie';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return CohorteForm::configure($schema);
