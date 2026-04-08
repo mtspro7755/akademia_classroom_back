@@ -11,18 +11,21 @@ class PostInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('apprenant_id')
-                    ->numeric(),
-                TextEntry::make('thematique_id')
-                    ->numeric(),
+                TextEntry::make('apprenant.email')
+                    ->label('Posté par'),
+
+                TextEntry::make('thematique.titre')
+                    ->label('Thématique'),
+
                 TextEntry::make('contenu')
+                    ->markdown()
                     ->columnSpanFull(),
                 TextEntry::make('description')
                     ->placeholder('-')
                     ->columnSpanFull(),
-                TextEntry::make('parent_post_id')
-                    ->numeric()
-                    ->placeholder('-'),
+                TextEntry::make('parent.contenu')
+                    ->label('Réponse au message')
+                    ->placeholder('Aucun (Ceci est le post racine)'),
                 TextEntry::make('typePost')
                     ->badge(),
                 TextEntry::make('created_at')

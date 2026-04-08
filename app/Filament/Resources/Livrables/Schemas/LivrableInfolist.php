@@ -11,10 +11,11 @@ class LivrableInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('apprenant_id')
-                    ->numeric(),
-                TextEntry::make('activite_id')
-                    ->numeric(),
+                TextEntry::make('apprenant.email')
+                    ->label('Soumis par (Email)'),
+
+                TextEntry::make('activite.titre')
+                    ->label('Pour l\'activité'),
                 TextEntry::make('typeLivrable')
                     ->badge(),
                 TextEntry::make('statutCorrection')

@@ -29,9 +29,10 @@ class ApprenantsTable
                     ->searchable(),
                 IconColumn::make('statutCompte')
                     ->boolean(),
-                TextColumn::make('profil_id')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('profil.typeProfil')
+                    ->label('Profil')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

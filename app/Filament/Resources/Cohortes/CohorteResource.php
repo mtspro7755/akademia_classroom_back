@@ -6,6 +6,7 @@ use App\Filament\Resources\Cohortes\Pages\CreateCohorte;
 use App\Filament\Resources\Cohortes\Pages\EditCohorte;
 use App\Filament\Resources\Cohortes\Pages\ListCohortes;
 use App\Filament\Resources\Cohortes\Pages\ViewCohorte;
+use App\Filament\Resources\Cohortes\RelationManagers\ParcoursFormationRelationManager;
 use App\Filament\Resources\Cohortes\Schemas\CohorteForm;
 use App\Filament\Resources\Cohortes\Schemas\CohorteInfolist;
 use App\Filament\Resources\Cohortes\Tables\CohortesTable;
@@ -47,7 +48,7 @@ class CohorteResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ParcoursFormationRelationManager::class
         ];
     }
 

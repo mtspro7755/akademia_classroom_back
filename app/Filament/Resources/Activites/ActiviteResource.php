@@ -18,6 +18,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use App\Filament\Resources\Activites\RelationManagers\QuestionsRelationManager;
+use App\Filament\Resources\Activites\RelationManagers\QueteRelationManager;
 
 class ActiviteResource extends Resource
 {
@@ -53,6 +54,7 @@ class ActiviteResource extends Resource
             QuestionsRelationManager::class,
             CriteresRelationManager::class,
             RessourcesRelationManager::class,
+            QueteRelationManager::class,
 
         ];
     }

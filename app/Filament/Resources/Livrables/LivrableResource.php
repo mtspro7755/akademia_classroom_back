@@ -6,6 +6,8 @@ use App\Filament\Resources\Livrables\Pages\CreateLivrable;
 use App\Filament\Resources\Livrables\Pages\EditLivrable;
 use App\Filament\Resources\Livrables\Pages\ListLivrables;
 use App\Filament\Resources\Livrables\Pages\ViewLivrable;
+use App\Filament\Resources\Livrables\RelationManagers\ActiviteRelationManager;
+use App\Filament\Resources\Livrables\RelationManagers\ApprenantRelationManager;
 use App\Filament\Resources\Livrables\RelationManagers\FeedbackRelationManager;
 use App\Filament\Resources\Livrables\RelationManagers\ReponsesQuestionsRelationManager;
 use App\Filament\Resources\Livrables\RelationManagers\ScoresRelationManager;
@@ -53,6 +55,9 @@ class LivrableResource extends Resource
             FeedbackRelationManager::class,
             ScoresRelationManager::class,
             ReponsesQuestionsRelationManager::class,
+            ApprenantRelationManager::class,
+            ActiviteRelationManager::class,
+
         ];
     }
 

@@ -1,38 +1,38 @@
 <?php
 
-namespace App\Filament\Resources\Activites\Tables;
+namespace App\Filament\Resources\Cohortes\RelationManagers;
 
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ActivitesTable
+class ParcoursFormationRelationManager extends RelationManager
 {
-    public static function configure(Table $table): Table
+    protected static string $relationship = 'parcoursFormation';
+
+    public function form(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextInput::make('intitule')
+                    ->required(),
+            ]);
+    }
+
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('nom')
             ->columns([
-                TextColumn::make('quete.titre')
-                    ->label('Quête')
-                    ->searchable()
-                    ->sortable(),
-                TextColumn::make('titre')
+                TextColumn::make('intitule')
                     ->searchable(),
-                TextColumn::make('duree')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('statut')
-                    ->searchable(),
-                TextColumn::make('ordreAffichage')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('typeActivite')
-                    ->badge(),
-                TextColumn::make('typeLivrable')
-                    ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -45,9 +45,12 @@ class ActivitesTable
             ->filters([
                 //
             ])
+            ->headerActions([
+                CreateAction::make(),
+            ])
             ->recordActions([
-                ViewAction::make(),
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

@@ -28,8 +28,9 @@ class CohortesTable
                     ->sortable(),
                 TextColumn::make('statut')
                     ->badge(),
-                TextColumn::make('parcours_formation_id')
-                    ->numeric()
+                TextColumn::make('parcoursFormation.intitule')
+                    ->label('Parcours de formation')
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()

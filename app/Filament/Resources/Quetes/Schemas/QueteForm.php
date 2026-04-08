@@ -25,9 +25,12 @@ class QueteForm
                 TextInput::make('niveauDifficulte')
                     ->required()
                     ->numeric(),
-                TextInput::make('parcours_formation_id')
-                    ->required()
-                    ->numeric(),
+                Select::make('parcours_formation_id')
+                    ->label('Parcours de formation')
+                    ->relationship('parcoursFormation', 'intitule')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
             ]);
     }
 }

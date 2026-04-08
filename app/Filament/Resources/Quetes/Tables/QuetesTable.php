@@ -28,8 +28,9 @@ class QuetesTable
                 TextColumn::make('niveauDifficulte')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('parcours_formation_id')
-                    ->numeric()
+                TextColumn::make('parcoursFormation.intitule')
+                    ->label('Parcours de formation')
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()

@@ -15,15 +15,18 @@ class PostsTable
     {
         return $table
             ->columns([
-                TextColumn::make('apprenant_id')
-                    ->numeric()
+                TextColumn::make('apprenant.email')
+                    ->label('Auteur')
+                    ->searchable()
                     ->sortable(),
-                TextColumn::make('thematique_id')
-                    ->numeric()
+                TextColumn::make('thematique.titre')
+                    ->label('Thématique')
+                    ->searchable()
                     ->sortable(),
-                TextColumn::make('parent_post_id')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('parent.contenu')
+                    ->label('En réponse à')
+                    ->limit(30)
+                    ->placeholder('Post original'),
                 TextColumn::make('typePost')
                     ->badge(),
                 TextColumn::make('created_at')

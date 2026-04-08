@@ -27,15 +27,14 @@ class ApprenantForm
                     ->required(),
                 TextInput::make('pseudo')
                     ->default(null),
-                TextInput::make('role')
+                Select::make('role')
+                    ->options([
+                        'Apprenant' => 'apprenant',
+                        'Formateur' => 'formateur',
+                    ])
                     ->required(),
                 Toggle::make('statutCompte')
-                    ->required(),
-                Select::make('profil_id')
-                    ->label('Profil')
-                    ->relationship('profil', 'typeProfil')
-                    ->searchable()
-                    ->preload()
+                    ->label('Activer le compte')
                     ->required(),
             ]);
     }
