@@ -13,12 +13,18 @@ class LivrableForm
     {
         return $schema
             ->components([
-                TextInput::make('apprenant_id')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('activite_id')
-                    ->required()
-                    ->numeric(),
+                Select::make('apprenant_id')
+                    ->label('Apprenant')
+                    ->relationship('apprenant', 'email')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Select::make('activite_id')
+                    ->label('Activité')
+                    ->relationship('activite', 'titre')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Select::make('typeLivrable')
                     ->options(['Lien' => 'Lien', 'Question' => 'Question'])
                     ->required(),

@@ -15,11 +15,13 @@ class LivrablesTable
     {
         return $table
             ->columns([
-                TextColumn::make('apprenant_id')
-                    ->numeric()
+                TextColumn::make('apprenant.email')
+                    ->label('Apprenant')
+                    ->searchable()
                     ->sortable(),
-                TextColumn::make('activite_id')
-                    ->numeric()
+                TextColumn::make('activite.titre')
+                    ->label('Activité')
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('typeLivrable')
                     ->badge(),

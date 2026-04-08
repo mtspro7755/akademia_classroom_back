@@ -11,8 +11,10 @@ class ActiviteInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('quete_id')
-                    ->numeric(),
+                TextEntry::make('quete.titre')
+                    ->label('Quête associée')
+                    ->weight('bold')
+                    ->color('primary'),
                 TextEntry::make('titre'),
                 TextEntry::make('description')
                     ->columnSpanFull(),

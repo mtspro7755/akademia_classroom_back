@@ -25,9 +25,12 @@ class CohorteForm
                 Select::make('statut')
                     ->options(['EnAttente' => 'En attente', 'EnCours' => 'En cours', 'Termine' => 'Termine'])
                     ->required(),
-                TextInput::make('parcours_formation_id')
-                    ->required()
-                    ->numeric(),
+                Select::make('parcours_formation_id')
+                    ->label('Parcours de formation')
+                    ->relationship('parcoursFormation', 'intitule')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
             ]);
     }
 }

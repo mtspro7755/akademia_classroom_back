@@ -13,21 +13,27 @@ class PostForm
     {
         return $schema
             ->components([
-                TextInput::make('apprenant_id')
-                    ->required()
-                    ->numeric(),
-                TextInput::make('thematique_id')
-                    ->required()
-                    ->numeric(),
+                Select::make('apprenant_id')
+                    ->relationship('apprenant', 'email')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                Select::make('thematique_id')
+                    ->relationship('thematique', 'titre')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Textarea::make('contenu')
                     ->required()
                     ->columnSpanFull(),
                 Textarea::make('description')
                     ->default(null)
                     ->columnSpanFull(),
-                TextInput::make('parent_post_id')
-                    ->numeric()
-                    ->default(null),
+                Select::make('parent_post_id')
+                    ->label('Répondre à')
+                    ->relationship('parent', 'contenu')
+                    ->searchable()
+                    ->placeholder('Laisser vide si c\'est un nouveau sujet'),
                 Select::make('typePost')
                     ->options(['Question' => 'Question', 'Reponse' => 'Reponse'])
                     ->required(),

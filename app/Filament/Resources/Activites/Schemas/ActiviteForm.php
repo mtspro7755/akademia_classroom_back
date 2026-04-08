@@ -13,9 +13,11 @@ class ActiviteForm
     {
         return $schema
             ->components([
-                TextInput::make('quete_id')
-                    ->required()
-                    ->numeric(),
+                Select::make('quete_id')
+                    ->relationship('quete', 'titre')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 TextInput::make('titre')
                     ->required(),
                 Textarea::make('description')

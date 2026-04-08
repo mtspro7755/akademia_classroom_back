@@ -6,6 +6,7 @@ use App\Filament\Resources\Quetes\Pages\CreateQuete;
 use App\Filament\Resources\Quetes\Pages\EditQuete;
 use App\Filament\Resources\Quetes\Pages\ListQuetes;
 use App\Filament\Resources\Quetes\Pages\ViewQuete;
+use App\Filament\Resources\Quetes\RelationManagers\ParcoursFormationRelationManager;
 use App\Filament\Resources\Quetes\Schemas\QueteForm;
 use App\Filament\Resources\Quetes\Schemas\QueteInfolist;
 use App\Filament\Resources\Quetes\Tables\QuetesTable;
@@ -47,7 +48,7 @@ class QueteResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ParcoursFormationRelationManager::class
         ];
     }
 

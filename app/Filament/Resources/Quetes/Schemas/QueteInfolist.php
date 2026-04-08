@@ -20,8 +20,8 @@ class QueteInfolist
                     ->date(),
                 TextEntry::make('niveauDifficulte')
                     ->numeric(),
-                TextEntry::make('parcours_formation_id')
-                    ->numeric(),
+                TextEntry::make('parcoursFormation.intitule')
+                    ->label('Parcours associé'),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),
