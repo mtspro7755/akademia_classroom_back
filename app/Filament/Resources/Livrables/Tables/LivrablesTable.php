@@ -19,6 +19,7 @@ class LivrablesTable
                     ->label('Apprenant')
                     ->searchable()
                     ->sortable(),
+
                 TextColumn::make('activite.titre')
                     ->label('Activité')
                     ->searchable()

@@ -23,7 +23,7 @@ class QueteForm
                 DatePicker::make('dateLimite')
                     ->required(),
                 TextInput::make('niveauDifficulte')
-                    ->required()
+                    ->placeholder('Non défini')
                     ->numeric(),
                 Select::make('parcours_formation_id')
                     ->label('Parcours de formation')

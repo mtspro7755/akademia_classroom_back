@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Activites\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class ActiviteInfolist
@@ -15,6 +16,15 @@ class ActiviteInfolist
                     ->label('Quête associée')
                     ->weight('bold')
                     ->color('primary'),
+
+                TextEntry::make('ressources.type')
+                    ->label('Ressource associée')
+                    ->listWithLineBreaks()
+                    ->bulleted()
+                    ->placeholder('Aucune ressource associée')
+                    ->weight('bold')
+                    ->color('primary'),
+
                 TextEntry::make('titre'),
                 TextEntry::make('description')
                     ->columnSpanFull(),

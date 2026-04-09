@@ -18,6 +18,14 @@ class ActiviteForm
                     ->searchable()
                     ->preload()
                     ->required(),
+
+                Select::make('ressources')
+                    ->relationship('ressources', 'type')
+                    ->multiple()
+                    ->preload()
+                    ->searchable()
+                    ->label('Associer des ressources'),
+
                 TextInput::make('titre')
                     ->required(),
                 Textarea::make('description')
@@ -26,8 +34,14 @@ class ActiviteForm
                 TextInput::make('duree')
                     ->required()
                     ->numeric(),
-                TextInput::make('statut')
-                    ->required(),
+                Select::make('statut')
+                    ->options([
+                        'Brouillon' => 'Brouillon',
+                        'Publié' => 'Publié',
+                        'Archivé' => 'Archivé',
+                    ])
+                    ->required()
+                    ->native(false),
                 TextInput::make('ordreAffichage')
                     ->required()
                     ->numeric(),
