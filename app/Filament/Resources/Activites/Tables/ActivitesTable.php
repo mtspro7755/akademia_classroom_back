@@ -19,6 +19,13 @@ class ActivitesTable
                     ->label('Quête')
                     ->searchable()
                     ->sortable(),
+
+                TextColumn::make('ressources.type')
+                    ->label('Ressource')
+                    ->listWithLineBreaks()
+                    ->bulleted()
+                    ->searchable(),
+
                 TextColumn::make('titre')
                     ->searchable(),
                 TextColumn::make('duree')
