@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class ParcoursFormation extends Model
 {
@@ -13,7 +14,7 @@ class ParcoursFormation extends Model
 
     public function cohortes(): HasMany
     {
-        return $this->hasMany(Cohorte::class);
+        return $this->hasMany(Cohorte::class, 'parcours_formation_id');
     }
 
     public function quetes(): HasMany
