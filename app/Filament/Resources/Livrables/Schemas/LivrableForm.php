@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources\Livrables\Schemas;
 
+use App\Models\Activite;
+use App\Models\ParcoursFormation;
+use App\Models\Quete;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -13,15 +16,38 @@ class LivrableForm
     {
         return $schema
             ->components([
+                Select::make('formation_id')
+                    ->label('Formation')
+                    ->options(ParcoursFormation::all()->pluck('intitule', 'id'))
+                    ->searchable()
+                    ->live()
+                    ->afterStateUpdated(fn ($set) => $set('quete_id', null)),
+
+                Select::make('quete_id')
+                    ->label('Quête')
+                    ->options(function ($get) {
+                        $formationId = $get('formation_id');
+                        if (!$formationId) return [];
+                        return Quete::where('parcours_formation_id', $formationId)->pluck('titre', 'id');
+                    })
+                    ->live()
+                    ->required()
+                    ->afterStateUpdated(fn ($set) => $set('activite_id', null)),
+
+
+                Select::make('activite_id')
+                ->label('Activité cible')
+                    ->options(function ($get) {
+                        $queteId = $get('quete_id');
+                        if (!$queteId) return [];
+                        return Activite::where('quete_id', $queteId)->pluck('titre', 'id');
+                    })
+                    ->required()
+                    ->searchable(),
+
                 Select::make('apprenant_id')
                     ->label('Apprenant')
                     ->relationship('apprenant', 'email')
-                    ->searchable()
-                    ->preload()
-                    ->required(),
-                Select::make('activite_id')
-                    ->label('Activité')
-                    ->relationship('activite', 'titre')
                     ->searchable()
                     ->preload()
                     ->required(),
