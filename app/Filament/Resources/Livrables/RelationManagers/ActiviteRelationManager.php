@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources\Livrables\RelationManagers;
 
+use App\Models\Activite;
+use App\Models\ParcoursFormation;
+use App\Models\Quete;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
@@ -23,9 +26,35 @@ class ActiviteRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                TextInput::make('quete_id')
+                Select::make('formation_id')
+                    ->label('Formation')
+                    ->options(ParcoursFormation::all()->pluck('intitule', 'id'))
+                    ->searchable()
+                    ->live()
+                    ->afterStateUpdated(fn ($set) => $set('quete_id', null)), // Suppression du typage Set pour sécurité
+
+                Select::make('quete_id')
+                    ->label('Quête')
+                    ->options(function ($get) {
+                        $formationId = $get('formation_id');
+                        if (!$formationId) return [];
+                        return Quete::where('parcours_formation_id', $formationId)->pluck('titre', 'id');
+                    })
+                    ->live()
                     ->required()
-                    ->numeric(),
+                    ->afterStateUpdated(fn ($set) => $set('activite_id', null)),
+
+
+                Select::make('activite_id')
+                ->label('Activité cible')
+                    ->options(function ($get) {
+                        $queteId = $get('quete_id');
+                        if (!$queteId) return [];
+                        return Activite::where('quete_id', $queteId)->pluck('titre', 'id');
+                    })
+                    ->required()
+                    ->searchable(),
+
                 TextInput::make('titre')
                     ->required(),
                 Textarea::make('description')
@@ -53,11 +82,22 @@ class ActiviteRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('titre')
             ->columns([
-                TextColumn::make('quete_id')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('titre')
+                // Affichage du Parcours de Formation (via la relation Quete)
+                TextColumn::make('quete.parcoursFormation.intitule')
+                    ->label('Parcours')
+                    ->sortable()
                     ->searchable(),
+
+                // Affichage du Titre de la Quête au lieu de l'ID numérique
+                TextColumn::make('quete.titre')
+                    ->label('Quête')
+                    ->sortable()
+                    ->searchable(),
+
+                TextColumn::make('titre')
+                    ->label('Activité')
+                    ->searchable(),
+
                 TextColumn::make('duree')
                     ->numeric()
                     ->sortable(),
@@ -67,9 +107,13 @@ class ActiviteRelationManager extends RelationManager
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('typeActivite')
-                    ->badge(),
+                    ->badge()
+                    ->color('info'),
+
                 TextColumn::make('typeLivrable')
-                    ->badge(),
+                    ->badge()
+                    ->color('warning'),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

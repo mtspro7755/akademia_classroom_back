@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Ressource extends Model
 {
+    protected $fillable = [
+        'titre',
+        'type',
+        'contenu',
+    ];
     protected $casts = [
         'type' => 'string',
     ];

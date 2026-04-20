@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Livrables\RelationManagers;
 
+use App\Models\CritereEvaluation;
 use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -10,6 +11,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -25,9 +27,16 @@ class ScoresRelationManager extends RelationManager
     {
         return $schema
             ->components([
-                TextInput::make('critere_evaluation_id')
-                    ->required()
-                    ->numeric(),
+                Select::make('critere_evaluation_id')
+                    ->label('Critère d\'évaluation')
+                    ->options(function () {
+                        return CritereEvaluation::all()->mapWithKeys(function ($critere) {
+                            return [$critere->id => "{$critere->critere} ({$critere->points} pts)"];
+                        });
+                    })
+                    ->searchable()
+                    ->required(),
+
                 TextInput::make('score')
                     ->required()
                     ->numeric(),
@@ -42,9 +51,12 @@ class ScoresRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('score')
             ->columns([
-                TextColumn::make('critere_evaluation_id')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('critereEvaluation.intitule')
+                    ->label('Critère')
+                    ->description(fn ($record) => "Barème : {$record->critereEvaluation->point} points")
+                    ->sortable()
+                    ->searchable(),
+
                 TextColumn::make('score')
                     ->numeric()
                     ->sortable(),
