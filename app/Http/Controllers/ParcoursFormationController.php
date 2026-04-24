@@ -78,17 +78,25 @@ class ParcoursFormationController extends Controller
         try {
             $user = auth()->user();
 
+            $cohortes = $user->cohortes()
+                ->with(['parcoursFormation', 'apprenants' => function($query) {
+                    // On filtre pour ne prendre que celui qui a le rôle formateur
+                    $query->where('role', 'formateur');
+                }])
+                ->get();
 
-            $parcours = $user->cohortes()
-                ->with('parcoursFormation')
-                ->get()
-                ->pluck('parcoursFormation');
+            $data = $cohortes->map(function ($cohorte) {
+                // On récupère le premier utilisateur trouvé avec le rôle formateur
+                $formateur = $cohorte->apprenants->first();
 
-            if ($parcours->isEmpty()) {
-                return response()->json([], 200);
-            }
+                return [
+                    'id' => $cohorte->parcoursFormation->id,
+                    'intitule' => $cohorte->parcoursFormation->intitule,
+                    'formateur_nom' => $formateur ? $formateur->nomComplet : 'En attente d\'attribution'
+                ];
+            });
 
-            return ParcoursFormationResource::collection($parcours);
+            return response()->json(['data' => $data]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
