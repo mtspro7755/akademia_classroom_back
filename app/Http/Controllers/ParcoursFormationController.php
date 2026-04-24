@@ -77,16 +77,20 @@ class ParcoursFormationController extends Controller
     {
         try {
             $user = auth()->user();
-            $cohorte = $user->cohortes()->with('parcoursFormation')->first();
 
-            if (!$cohorte) {
-                return response()->json(['message' => 'Aucune cohorte trouvée'], 404);
+
+            $parcours = $user->cohortes()
+                ->with('parcoursFormation')
+                ->get()
+                ->pluck('parcoursFormation');
+
+            if ($parcours->isEmpty()) {
+                return response()->json([], 200);
             }
 
-            return new ParcoursFormationResource($cohorte->parcoursFormation);
+            return ParcoursFormationResource::collection($parcours);
         } catch (\Exception $e) {
-            Log::debug($e->getMessage());
-            return response()->json(['error' => 'Erreur'], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 
