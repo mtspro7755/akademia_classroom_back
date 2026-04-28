@@ -69,11 +69,11 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/cohortes', [CohorteController::class, 'index']);
 
     Route::post('/quetes', [QueteController::class, 'store']);
+    Route::get('/quetes/etudiants', [QueteController::class, 'getQuetesByEtudiant']);
     Route::put('/quetes/{quete}', [QueteController::class, 'update']);
     Route::delete('/quetes/{quete}', [QueteController::class, 'destroy']);
     Route::get('/quetes/{quete}', [QueteController::class, 'show']);
     Route::get('/quetes', [QueteController::class, 'index']);
-    Route::get('/quetes/etudiants', [QueteController::class, 'getQuetesByEtudiant']);
 
     Route::post('/thematiques', [ThematiqueController::class, 'store']);
     Route::put('/thematiques/{thematique}', [ThematiqueController::class, 'update']);
