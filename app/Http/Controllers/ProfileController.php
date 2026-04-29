@@ -17,6 +17,7 @@ class ProfileController extends Controller
             $user->update([
                 'nomComplet' => $request->nomComplet ?? $user->nomComplet,
                 'email' => $request->email ?? $user->email,
+                'phone' => $request->phone ?? $user->phone,
             ]);
 
             return response()->json([
