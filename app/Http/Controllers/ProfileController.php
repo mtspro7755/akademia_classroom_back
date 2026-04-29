@@ -9,6 +9,20 @@ use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
+    public function getProfile()
+    {
+        try{
+            $user = auth()->user();
+            
+            return response()->json([
+                'user' => new ApprenantResource($user)
+            ]);
+        }catch (\Exception $e) {
+            Log::debug($e->getMessage());
+            return response()->json(['error' => 'Erreur'], 500);
+        }
+    }
+
     public function updateInfo(ProfileRequest $request)
     {
         try{

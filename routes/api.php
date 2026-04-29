@@ -43,6 +43,7 @@ Route::middleware('auth:api')->group(function () {
 
     });
 
+    Route::get('/profile',[ProfileController::class, 'getProfile']);
     Route::put('/profile/info',[ProfileController::class, 'updateInfo']);
     Route::put('/profile/password',[ProfileController::class, 'changePassword']);
 
