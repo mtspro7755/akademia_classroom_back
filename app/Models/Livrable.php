@@ -14,7 +14,15 @@ class Livrable extends Model
         'typeLivrable',
         'statutCorrection',
         'dateSoumission',
-        'dureeEffectue'
+        'dureeEffectue',
+        'dureeActivite',
+        'estEnRetard',
+        'minutesRetard',
+    ];
+
+    protected $casts = [
+        'estEnRetard' => 'boolean',
+        'dateSoumission' => 'datetime',
     ];
 
     public function apprenant()

@@ -15,7 +15,8 @@ class Activite extends Model
         'statut',
         'ordreAffichage',
         'typeActivite',
-        'typeLivrable'
+        'typeLivrable',
+        'modaliteTravail'
     ];
 
     public function quete()
@@ -41,7 +42,10 @@ class Activite extends Model
     public function ressources(): BelongsToMany
     {
         return $this->belongsToMany(Ressource::class, 'activite_ressources')
-            ->withPivot('type')
+            ->withPivot('type',
+                'titre',
+                'lienRessource',
+                'pdfRessource')
             ->withTimestamps();
     }
 

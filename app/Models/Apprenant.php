@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -31,10 +34,31 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
         'statutCompte' => 'boolean',
     ];
 
-    public function profil()
+    /**
+     * Changement : Relation 1-1 vers ProfilApprenant.
+     * Dans ton nouveau MCD, la liaison est directe entre l'entité centrale et son profil.
+     */
+    public function profil(): HasOne
     {
-        return $this->belongsTo(Profil::class);
+        return $this->hasOne(ProfilApprenant::class);
     }
+
+    /**
+     * Nouveauté MCD : Un apprenant peut avoir plusieurs candidatures.
+     */
+    /*public function candidatures(): HasMany
+    {
+        return $this->hasMany(Candidature::class);
+    }*/
+
+    /**
+     * Nouveauté MCD : Un apprenant peut composer un ou plusieurs groupes d'activités.
+     */
+    /*public function groupesActivites(): BelongsToMany
+    {
+        return $this->belongsToMany(GroupeActivite::class, 'apprenant_groupe')
+            ->withTimestamps();
+    }*/
 
     public function cohortes()
     {
@@ -94,7 +118,7 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
 
     public function canAccessPanel(\Filament\Panel $panel): bool
     {
-        return $this->role === 'admin' && $this->statutCompte;
+        return in_array($this->role, ['admin', 'formateur']) && $this->statutCompte;
     }
 
     public function scopeFormateurs($query)

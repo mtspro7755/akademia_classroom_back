@@ -19,7 +19,10 @@ class Ressource extends Model
     public function activites(): BelongsToMany
     {
         return $this->belongsToMany(Activite::class, 'activite_ressources')
-            ->withPivot('type')
+            ->withPivot('type',
+                'titre',
+                'lienRessource',
+                'pdfRessource')
             ->withTimestamps();
     }
 }

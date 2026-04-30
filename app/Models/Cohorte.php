@@ -12,7 +12,9 @@ class Cohorte extends Model
         'dateDebut',
         'dateFin',
         'statut',
-        'parcours_formation_id'
+        'parcours_formation_id',
+        'prix',
+        'devise',
     ];
 
     public function parcoursFormation()
