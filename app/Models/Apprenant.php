@@ -6,6 +6,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -23,7 +24,7 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
         'pseudo',
         'role',
         'statutCompte',
-        'profil_id'
+        'groupe_activite_id'
     ];
 
     protected $hidden = [
@@ -43,22 +44,6 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
         return $this->hasOne(ProfilApprenant::class);
     }
 
-    /**
-     * Nouveauté MCD : Un apprenant peut avoir plusieurs candidatures.
-     */
-    /*public function candidatures(): HasMany
-    {
-        return $this->hasMany(Candidature::class);
-    }*/
-
-    /**
-     * Nouveauté MCD : Un apprenant peut composer un ou plusieurs groupes d'activités.
-     */
-    /*public function groupesActivites(): BelongsToMany
-    {
-        return $this->belongsToMany(GroupeActivite::class, 'apprenant_groupe')
-            ->withTimestamps();
-    }*/
 
     public function cohortes()
     {
@@ -129,5 +114,15 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
     public function scopeApprenants($query)
     {
         return $query->where('role', 'apprenant');
+    }
+
+    public function groupeActivite(): BelongsTo
+    {
+        return $this->belongsTo(GroupeActivite::class, 'groupe_activite_id');
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
     }
 }

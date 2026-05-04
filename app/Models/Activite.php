@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Activite extends Model
 {
@@ -52,5 +53,10 @@ class Activite extends Model
     public function actives()
     {
         return Quete::where('statut', 'Actif')->get();
+    }
+
+    public function groupesActivites(): HasMany
+    {
+        return $this->hasMany(GroupeActivite::class);
     }
 }
