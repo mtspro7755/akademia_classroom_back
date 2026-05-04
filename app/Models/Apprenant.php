@@ -3,6 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -20,7 +24,7 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
         'pseudo',
         'role',
         'statutCompte',
-        'profil_id'
+        'groupe_activite_id'
     ];
 
     protected $hidden = [
@@ -31,10 +35,15 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
         'statutCompte' => 'boolean',
     ];
 
-    public function profil()
+    /**
+     * Changement : Relation 1-1 vers ProfilApprenant.
+     * Dans ton nouveau MCD, la liaison est directe entre l'entité centrale et son profil.
+     */
+    public function profil(): HasOne
     {
-        return $this->belongsTo(Profil::class);
+        return $this->hasOne(ProfilApprenant::class);
     }
+
 
     public function cohortes()
     {
@@ -94,7 +103,7 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
 
     public function canAccessPanel(\Filament\Panel $panel): bool
     {
-        return $this->role === 'admin' && $this->statutCompte;
+        return in_array($this->role, ['admin', 'formateur']) && $this->statutCompte;
     }
 
     public function scopeFormateurs($query)
@@ -105,5 +114,15 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
     public function scopeApprenants($query)
     {
         return $query->where('role', 'apprenant');
+    }
+
+    public function groupeActivite(): BelongsTo
+    {
+        return $this->belongsTo(GroupeActivite::class, 'groupe_activite_id');
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
     }
 }

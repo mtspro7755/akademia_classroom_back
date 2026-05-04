@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 class ParcoursFormation extends Model
 {
     protected $fillable = [
-        'intitule'
+        'intitule',
+        'type'
     ];
 
     public function cohortes(): HasMany

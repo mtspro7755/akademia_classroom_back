@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Livrable extends Model
 {
@@ -14,7 +16,15 @@ class Livrable extends Model
         'typeLivrable',
         'statutCorrection',
         'dateSoumission',
-        'dureeEffectue'
+        'dureeEffectue',
+        'dureeActivite',
+        'estEnRetard',
+        'minutesRetard',
+    ];
+
+    protected $casts = [
+        'estEnRetard' => 'boolean',
+        'dateSoumission' => 'datetime',
     ];
 
     public function apprenant()
@@ -40,6 +50,11 @@ class Livrable extends Model
     public function reponsesQuestions()
     {
         return $this->hasMany(LivrableParQuestion::class);
+    }
+
+    public function penalites(): HasMany
+    {
+        return $this->hasMany(Penalite::class);
     }
 
 }

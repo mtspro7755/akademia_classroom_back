@@ -11,7 +11,10 @@ class Penalite extends Model
         'apprenant_id',
         'dureeInitial',
         'tempsDeRetard',
-        'penalite'
+        'penalite',
+        'type_enum',
+        'justificatif',
+        'livrable_id'
     ];
 
     public function apprenant()
@@ -24,5 +27,10 @@ class Penalite extends Model
         static::creating(function ($penalite) {
            $penalite->penalite = $penalite->tempsDeRetard * 10;
         });
+    }
+
+    public function livrable(): BelongsTo
+    {
+        return $this->belongsTo(Livrable::class);
     }
 }
