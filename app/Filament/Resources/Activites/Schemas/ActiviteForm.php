@@ -43,7 +43,7 @@ class ActiviteForm
                     }),
 
                 Select::make('ressources')
-                    ->relationship('ressources', 'type')
+                    ->relationship('ressources', 'titre')
                     ->multiple()
                     ->preload()
                     ->searchable()
