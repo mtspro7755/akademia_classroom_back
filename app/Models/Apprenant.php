@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Filament\Models\Contracts\HasName;
+use Illuminate\Validation\ValidationException;
 
 class Apprenant extends Authenticatable implements JWTSubject, HasName
 {
@@ -124,5 +125,19 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
+    }
+
+    public function inscrireACohorte($cohorteId)
+    {
+        $aDejaUneCohorteActive = $this->cohortes()
+            ->where('statut', 'EnCours')
+            ->exists();
+
+        if ($aDejaUneCohorteActive) {
+            throw ValidationException::withMessages([
+                'cohorte' => "Cet apprenant appartient déjà à une cohorte active. Impossible de l'ajouter à une autre."
+            ]);
+        }
+        $this->cohortes()->attach($cohorteId);
     }
 }

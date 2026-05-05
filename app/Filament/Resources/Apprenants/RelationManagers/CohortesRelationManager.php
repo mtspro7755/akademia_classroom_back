@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Apprenants\RelationManagers;
 
+use App\Models\Cohorte;
 use Filament\Actions\AttachAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -15,6 +16,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
@@ -26,7 +28,6 @@ class CohortesRelationManager extends RelationManager
 
     public function form(Schema $schema): Schema
     {
-        // On garde les champs de l'entité Cohorte pour l'édition/création
         return $schema
             ->components([
                 TextInput::make('nom')
@@ -52,7 +53,6 @@ class CohortesRelationManager extends RelationManager
                 TextInput::make('devise')
                     ->required()
                     ->default('XOF'),
-                // Liaison vers ParcoursFormation selon ton MCD
                 Select::make('parcours_formation_id')
                     ->relationship('parcoursFormation', 'intitule')
                     ->required(),
@@ -65,13 +65,66 @@ class CohortesRelationManager extends RelationManager
             ->recordTitleAttribute('nom')
             ->columns([
                 TextColumn::make('nom')->searchable(),
-                TextColumn::make('statut')->badge(),
+                TextColumn::make('statut')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'EnAttente' => 'gray',
+                        'EnCours' => 'success',
+                        'Termine' => 'info',
+                    }),
                 TextColumn::make('dateDebut')->date()->sortable(),
                 TextColumn::make('dateFin')->date()->sortable(),
+                TextColumn::make('apprenants_count')
+                    ->counts('apprenants')
+                    ->label('Inscrits'),
             ])
             ->headerActions([
                 AttachAction::make()
-                    ->preloadRecordSelect(),
+                    ->preloadRecordSelect()
+                    ->recordSelectSearchColumns(['nom'])
+                    ->before(function (AttachAction $action, $livewire, array $data) {
+                        // Récupération sécurisée de l'apprenant (le parent de la relation)
+                        $apprenant = $livewire->ownerRecord;
+
+                        if (! $apprenant) {
+                            Notification::make()
+                                ->danger()
+                                ->title('Erreur système')
+                                ->body('Impossible de retrouver les données de l\'apprenant.')
+                                ->send();
+                            $action->halt();
+                            return;
+                        }
+
+                        $existeActive = $apprenant->cohortes()
+                            ->where('statut', 'EnCours')
+                            ->exists();
+
+                        if ($existeActive) {
+                            Notification::make()
+                                ->danger()
+                                ->title('Action impossible')
+                                ->body('Cet apprenant est déjà inscrit dans une cohorte active.')
+                                ->send();
+
+                            $action->halt();
+                        }
+
+                        $cohorteId = $data['recordId'] ?? null;
+                        if ($cohorteId) {
+                            $cohorte = Cohorte::find($cohorteId);
+
+                            if ($cohorte && $cohorte->apprenants()->count() >= $cohorte->capaciteMax) {
+                                Notification::make()
+                                    ->danger()
+                                    ->title('Capacité atteinte')
+                                    ->body("La cohorte '{$cohorte->nom}' est déjà complète ({$cohorte->capaciteMax} places).")
+                                    ->send();
+
+                                $action->halt();
+                            }
+                        }
+                    }),
             ])
             ->actions([
                 ViewAction::make(),
