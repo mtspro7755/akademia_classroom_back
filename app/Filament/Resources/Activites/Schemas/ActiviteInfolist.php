@@ -17,7 +17,7 @@ class ActiviteInfolist
                     ->weight('bold')
                     ->color('primary'),
 
-                TextEntry::make('ressources.type')
+                TextEntry::make('ressources.titre')
                     ->label('Ressource associée')
                     ->listWithLineBreaks()
                     ->bulleted()

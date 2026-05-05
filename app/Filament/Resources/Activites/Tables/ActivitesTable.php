@@ -20,7 +20,7 @@ class ActivitesTable
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('ressources.type')
+                TextColumn::make('ressources.titre')
                     ->label('Ressource')
                     ->listWithLineBreaks()
                     ->bulleted()
