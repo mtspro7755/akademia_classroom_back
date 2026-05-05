@@ -8,6 +8,7 @@ use App\Filament\Resources\Apprenants\Pages\ListApprenants;
 use App\Filament\Resources\Apprenants\Pages\ViewApprenant;
 use App\Filament\Resources\Apprenants\RelationManagers\CohortesRelationManager;
 use App\Filament\Resources\Apprenants\RelationManagers\PenalitesRelationManager;
+use App\Filament\Resources\Apprenants\RelationManagers\QuetesRelationManager;
 use App\Filament\Resources\Apprenants\Schemas\ApprenantForm;
 use App\Filament\Resources\Apprenants\Schemas\ApprenantInfolist;
 use App\Filament\Resources\Apprenants\Tables\ApprenantsTable;
@@ -50,7 +51,8 @@ class ApprenantResource extends Resource
     {
         return [
             PenalitesRelationManager::class,
-            CohortesRelationManager::class
+            CohortesRelationManager::class,
+            QuetesRelationManager::class
         ];
     }
 
