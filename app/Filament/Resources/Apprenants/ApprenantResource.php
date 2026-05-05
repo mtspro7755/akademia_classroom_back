@@ -6,6 +6,7 @@ use App\Filament\Resources\Apprenants\Pages\CreateApprenant;
 use App\Filament\Resources\Apprenants\Pages\EditApprenant;
 use App\Filament\Resources\Apprenants\Pages\ListApprenants;
 use App\Filament\Resources\Apprenants\Pages\ViewApprenant;
+use App\Filament\Resources\Apprenants\RelationManagers\CohortesRelationManager;
 use App\Filament\Resources\Apprenants\RelationManagers\PenalitesRelationManager;
 use App\Filament\Resources\Apprenants\Schemas\ApprenantForm;
 use App\Filament\Resources\Apprenants\Schemas\ApprenantInfolist;
@@ -48,7 +49,8 @@ class ApprenantResource extends Resource
     public static function getRelations(): array
     {
         return [
-            PenalitesRelationManager::class
+            PenalitesRelationManager::class,
+            CohortesRelationManager::class
         ];
     }
 
