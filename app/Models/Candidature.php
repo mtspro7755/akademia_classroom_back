@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Candidature extends Model
 {
@@ -11,6 +12,11 @@ class Candidature extends Model
         'apprenant_id',
         'statut',
     ];
+
+    public function apprenant(): BelongsTo
+    {
+        return $this->belongsTo(Apprenant::class);
+    }
 
     public function paiement(): HasOne
     {
