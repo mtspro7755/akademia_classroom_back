@@ -40,6 +40,9 @@ class ActivitesTable
                     ->badge(),
                 TextColumn::make('typeLivrable')
                     ->badge(),
+                TextColumn::make('modaliteTravail')
+                    ->label('Modalité de travail')
+                    ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

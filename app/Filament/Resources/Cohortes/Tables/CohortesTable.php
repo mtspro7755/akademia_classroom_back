@@ -28,6 +28,14 @@ class CohortesTable
                     ->sortable(),
                 TextColumn::make('statut')
                     ->badge(),
+                TextColumn::make('prix')
+                    ->label('Prix')
+                    ->money('XOF', locale: 'fr')
+                    ->sortable(),
+                TextColumn::make('devise')
+                    ->label('Devise')
+                    ->badge()
+                    ->color('warning'),
                 TextColumn::make('parcoursFormation.intitule')
                     ->label('Parcours de formation')
                     ->searchable()

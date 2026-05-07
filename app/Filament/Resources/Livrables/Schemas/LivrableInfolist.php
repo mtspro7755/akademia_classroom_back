@@ -36,6 +36,20 @@ class LivrableInfolist
                     ->placeholder('-'),
                 TextEntry::make('lienDeploye')
                     ->placeholder('-'),
+                TextEntry::make('dureeActivite')
+                    ->label('Durée prévue de l\'activité')
+                    ->numeric()
+                    ->placeholder('-'),
+                TextEntry::make('estEnRetard')
+                    ->label('En retard')
+                    ->badge()
+                    ->color(fn (bool $state): string => $state ? 'danger' : 'success')
+                    ->formatStateUsing(fn (bool $state): string => $state ? 'Oui' : 'Non')
+                    ->placeholder('-'),
+                TextEntry::make('minutesRetard')
+                    ->label('Minutes de retard')
+                    ->numeric()
+                    ->placeholder('-'),
             ]);
     }
 }

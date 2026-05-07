@@ -13,6 +13,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
@@ -27,7 +28,7 @@ class RessourcesRelationManager extends RelationManager
         return $schema
             ->components([
                 TextInput::make('titre')
-                ->required()
+                    ->required()
                     ->maxLength(255),
 
                 Select::make('type')
@@ -39,18 +40,46 @@ class RessourcesRelationManager extends RelationManager
                     ->live()
                     ->required(),
 
-                TextInput::make('contenu')
+                TextInput::make('lienRessource')
                     ->label('URL du lien')
                     ->url()
-                    ->required()
+                    ->nullable()
                     ->visible(fn ($get) => $get('type') === 'lien'),
 
-                FileUpload::make('contenu')
+                FileUpload::make('pdfRessource')
                     ->label('Fichier PDF')
                     ->directory('ressources-pedagogiques')
                     ->acceptedFileTypes(['application/pdf'])
-                    ->required()
+                    ->nullable()
                     ->visible(fn ($get) => $get('type') === 'pdf'),
+            ]);
+    }
+
+    public function infolist(Schema $schema): Schema
+    {
+        return $schema
+            ->components([
+                TextEntry::make('titre'),
+                TextEntry::make('type')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'pdf' => 'danger',
+                        'lien' => 'success',
+                        default => 'gray',
+                    }),
+                TextEntry::make('lienRessource')
+                    ->label('URL du lien')
+                    ->url()
+                    ->visible(fn ($record) => $record->type === 'lien'),
+                TextEntry::make('pdfRessource')
+                    ->label('Fichier PDF')
+                    ->visible(fn ($record) => $record->type === 'pdf'),
+                TextEntry::make('created_at')
+                    ->dateTime()
+                    ->placeholder('-'),
+                TextEntry::make('updated_at')
+                    ->dateTime()
+                    ->placeholder('-'),
             ]);
     }
 
@@ -69,6 +98,15 @@ class RessourcesRelationManager extends RelationManager
                         'lien' => 'success',
                         default => 'gray',
                     }),
+                TextColumn::make('lienRessource')
+                    ->label('URL du lien')
+                    ->url()
+                    ->visible(fn ($record) => $record->type === 'lien')
+                    ->toggleable(),
+                TextColumn::make('pdfRessource')
+                    ->label('Fichier PDF')
+                    ->visible(fn ($record) => $record->type === 'pdf')
+                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

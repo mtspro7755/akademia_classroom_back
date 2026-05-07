@@ -20,6 +20,13 @@ class CohorteInfolist
                     ->date(),
                 TextEntry::make('statut')
                     ->badge(),
+                TextEntry::make('prix')
+                    ->label('Prix')
+                    ->money('XOF', locale: 'fr'),
+                TextEntry::make('devise')
+                    ->label('Devise')
+                    ->badge()
+                    ->color('warning'),
                 TextEntry::make('parcoursFormation.intitule')
                     ->label('Parcours associé'),
                 TextEntry::make('created_at')

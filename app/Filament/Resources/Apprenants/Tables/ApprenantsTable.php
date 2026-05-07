@@ -29,10 +29,11 @@ class ApprenantsTable
                     ->searchable(),
                 IconColumn::make('statutCompte')
                     ->boolean(),
-                TextColumn::make('profil.typeProfil')
-                    ->label('Profil')
+                TextColumn::make('groupeActivite.nom')
+                    ->label('Groupe d\'activité')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->placeholder('-'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

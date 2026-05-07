@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ParcoursFormations;
 use App\Filament\Resources\ParcoursFormations\Pages\CreateParcoursFormation;
 use App\Filament\Resources\ParcoursFormations\Pages\EditParcoursFormation;
 use App\Filament\Resources\ParcoursFormations\Pages\ListParcoursFormations;
+use App\Filament\Resources\ParcoursFormations\Pages\ViewParcoursFormation;
 use App\Filament\Resources\ParcoursFormations\Schemas\ParcoursFormationForm;
 use App\Filament\Resources\ParcoursFormations\Tables\ParcoursFormationsTable;
 use App\Models\ParcoursFormation;
@@ -37,6 +38,11 @@ class ParcoursFormationResource extends Resource
         return ParcoursFormationsTable::configure($table);
     }
 
+    public static function infolist(Schema $schema): Schema
+    {
+        return \App\Filament\Resources\ParcoursFormations\Schemas\ParcoursFormationInfolist::configure($schema);
+    }
+
     public static function getRelations(): array
     {
         return [
@@ -49,6 +55,7 @@ class ParcoursFormationResource extends Resource
         return [
             'index' => ListParcoursFormations::route('/'),
             'create' => CreateParcoursFormation::route('/create'),
+            'view' => ViewParcoursFormation::route('/{record}'),
             'edit' => EditParcoursFormation::route('/{record}/edit'),
         ];
     }

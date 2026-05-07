@@ -36,6 +36,12 @@ class ApprenantForm
                 Toggle::make('statutCompte')
                     ->label('Activer le compte')
                     ->required(),
+                Select::make('groupe_activite_id')
+                    ->label('Groupe d\'activité')
+                    ->relationship('groupeActivite', 'nom')
+                    ->searchable()
+                    ->preload()
+                    ->nullable(),
             ]);
     }
 }
