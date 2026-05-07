@@ -28,7 +28,7 @@ class ActiviteForm
                 Select::make('quete_id')
                     ->label('Quête')
                     ->relationship('quete', 'titre')
-                    ->searchable()
+                    ->searchable(['quetes.titre'])
                     ->preload()
                     ->required()
                     ->options(function (Get $get) {
@@ -46,7 +46,7 @@ class ActiviteForm
                     ->relationship('ressources', 'titre')
                     ->multiple()
                     ->preload()
-                    ->searchable()
+                    ->searchable(['ressources.titre'])
                     ->label('Associer des ressources'),
 
                 TextInput::make('titre')
