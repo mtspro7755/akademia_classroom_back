@@ -37,6 +37,9 @@ class ActiviteInfolist
                     ->badge(),
                 TextEntry::make('typeLivrable')
                     ->badge(),
+                TextEntry::make('modaliteTravail')
+                    ->label('Modalité de travail')
+                    ->badge(),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),

@@ -74,6 +74,11 @@ class ActiviteForm
                 Select::make('typeLivrable')
                     ->options(['Lien' => 'Lien', 'Question' => 'Question'])
                     ->required(),
+                Select::make('modaliteTravail')
+                    ->label('Modalité de travail')
+                    ->options(['individuel' => 'Individuel', 'collectif' => 'Collectif'])
+                    ->default('individuel')
+                    ->required(),
             ]);
     }
 }

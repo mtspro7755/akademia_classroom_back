@@ -64,6 +64,21 @@ class LivrableForm
                     ->default(null),
                 TextInput::make('lienDeploye')
                     ->default(null),
+                TextInput::make('dureeActivite')
+                    ->label('Durée prévue de l\'activité')
+                    ->numeric()
+                    ->default(null),
+                Select::make('estEnRetard')
+                    ->label('En retard ?')
+                    ->options([
+                        false => 'Non',
+                        true => 'Oui',
+                    ])
+                    ->default(false),
+                TextInput::make('minutesRetard')
+                    ->label('Minutes de retard')
+                    ->numeric()
+                    ->default(0),
             ]);
     }
 }

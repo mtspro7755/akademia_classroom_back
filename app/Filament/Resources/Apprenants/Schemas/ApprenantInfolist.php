@@ -21,9 +21,9 @@ class ApprenantInfolist
                 TextEntry::make('role'),
                 IconEntry::make('statutCompte')
                     ->boolean(),
-                TextEntry::make('profil.typeProfil')
-                    ->label('Type de Profil')
-                    ->placeholder('Non défini'),
+                TextEntry::make('groupeActivite.nom')
+                    ->label('Groupe d\'activité')
+                    ->placeholder('Non assigné'),
                 TextEntry::make('created_at')
                     ->dateTime()
                     ->placeholder('-'),
