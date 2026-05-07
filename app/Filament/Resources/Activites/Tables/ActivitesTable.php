@@ -17,17 +17,17 @@ class ActivitesTable
             ->columns([
                 TextColumn::make('quete.titre')
                     ->label('Quête')
-                    ->searchable()
+                    ->searchable(['quetes.titre'])
                     ->sortable(),
 
                 TextColumn::make('ressources.titre')
                     ->label('Ressource')
                     ->listWithLineBreaks()
                     ->bulleted()
-                    ->searchable(),
+                    ->searchable(['ressources.titre']),
 
                 TextColumn::make('titre')
-                    ->searchable(),
+                    ->searchable(['activites.titre']),
                 TextColumn::make('duree')
                     ->numeric()
                     ->sortable(),

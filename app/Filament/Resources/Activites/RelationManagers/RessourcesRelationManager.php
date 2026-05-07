@@ -57,10 +57,10 @@ class RessourcesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('titre')
+            ->recordTitleAttribute('ressources.titre')
             ->columns([
                 TextColumn::make('titre')
-                    ->searchable()
+                    ->searchable(['ressources.titre'])
                     ->sortable(),
                 TextColumn::make('type')
                     ->badge()
