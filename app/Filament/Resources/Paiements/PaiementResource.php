@@ -6,6 +6,9 @@ use App\Filament\Resources\Paiements\Pages\CreatePaiement;
 use App\Filament\Resources\Paiements\Pages\EditPaiement;
 use App\Filament\Resources\Paiements\Pages\ListPaiements;
 use App\Filament\Resources\Paiements\Pages\ViewPaiement;
+use App\Filament\Resources\Paiements\RelationManagers\ApprenantRelationManager;
+use App\Filament\Resources\Paiements\RelationManagers\CandidaturesRelationManager;
+use App\Filament\Resources\Paiements\RelationManagers\CohorteRelationManager;
 use App\Filament\Resources\Paiements\Schemas\PaiementForm;
 use App\Filament\Resources\Paiements\Schemas\PaiementInfolist;
 use App\Filament\Resources\Paiements\Tables\PaiementsTable;
@@ -42,7 +45,9 @@ class PaiementResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ApprenantRelationManager::class,
+            CohorteRelationManager::class,
+            CandidaturesRelationManager::class,
         ];
     }
 
