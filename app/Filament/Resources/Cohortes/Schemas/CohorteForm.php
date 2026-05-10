@@ -28,9 +28,8 @@ class CohorteForm
                 TextInput::make('prix')
                     ->label('Prix')
                     ->numeric()
-                    ->decimalPlaces(2)
-                    ->default(0.00)
-                    ->step(0.01),
+                    ->step(0.01)
+                    ->default(0.00),
                 TextInput::make('devise')
                     ->label('Devise')
                     ->default('XOF')

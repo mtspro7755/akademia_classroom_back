@@ -6,6 +6,7 @@ use App\Filament\Resources\Candidatures\Pages\CreateCandidature;
 use App\Filament\Resources\Candidatures\Pages\EditCandidature;
 use App\Filament\Resources\Candidatures\Pages\ListCandidatures;
 use App\Filament\Resources\Candidatures\Pages\ViewCandidature;
+use App\Filament\Resources\Candidatures\RelationManagers\PaiementsRelationManager;
 use App\Filament\Resources\Candidatures\Schemas\CandidatureForm;
 use App\Filament\Resources\Candidatures\Schemas\CandidatureInfolist;
 use App\Filament\Resources\Candidatures\Tables\CandidaturesTable;
@@ -42,7 +43,7 @@ class CandidatureResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            PaiementsRelationManager::class
         ];
     }
 
