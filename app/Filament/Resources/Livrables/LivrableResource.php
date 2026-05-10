@@ -9,6 +9,7 @@ use App\Filament\Resources\Livrables\Pages\ViewLivrable;
 use App\Filament\Resources\Livrables\RelationManagers\ActiviteRelationManager;
 use App\Filament\Resources\Livrables\RelationManagers\ApprenantRelationManager;
 use App\Filament\Resources\Livrables\RelationManagers\FeedbackRelationManager;
+use App\Filament\Resources\Livrables\RelationManagers\PenaliteRelationManager;
 use App\Filament\Resources\Livrables\RelationManagers\ReponsesQuestionsRelationManager;
 use App\Filament\Resources\Livrables\RelationManagers\ScoresRelationManager;
 use App\Filament\Resources\Livrables\Schemas\LivrableForm;
@@ -57,7 +58,7 @@ class LivrableResource extends Resource
             ReponsesQuestionsRelationManager::class,
             ApprenantRelationManager::class,
             ActiviteRelationManager::class,
-
+            PenaliteRelationManager::class,
         ];
     }
 
