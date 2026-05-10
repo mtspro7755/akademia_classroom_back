@@ -25,6 +25,11 @@ class CandidatureResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'statut';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Admissions';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return CandidatureForm::configure($schema);

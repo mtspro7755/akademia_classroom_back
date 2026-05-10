@@ -27,6 +27,11 @@ class PaiementResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'montant';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Finances';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return PaiementForm::configure($schema);

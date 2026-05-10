@@ -24,6 +24,11 @@ class CanalDeDiscussionResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'titre';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Communication';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return CanalDeDiscussionForm::configure($schema);
