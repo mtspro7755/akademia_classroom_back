@@ -5,6 +5,7 @@ namespace App\Filament\Resources\CanalDeDiscussions\Tables;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
@@ -16,7 +17,8 @@ class CanalDeDiscussionsTable
             ->columns([
                 TextColumn::make('titre')
                     ->searchable(),
-                TextColumn::make('cohorte.id')
+                TextColumn::make('cohorte.nom')
+                    ->label('Cohorte')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -31,6 +33,7 @@ class CanalDeDiscussionsTable
                 //
             ])
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

@@ -5,6 +5,8 @@ namespace App\Filament\Resources\CanalDeDiscussions;
 use App\Filament\Resources\CanalDeDiscussions\Pages\CreateCanalDeDiscussion;
 use App\Filament\Resources\CanalDeDiscussions\Pages\EditCanalDeDiscussion;
 use App\Filament\Resources\CanalDeDiscussions\Pages\ListCanalDeDiscussions;
+use App\Filament\Resources\CanalDeDiscussions\Pages\ViewCanalDeDiscussion;
+use App\Filament\Resources\CanalDeDiscussions\RelationManagers\MessagesRelationManager;
 use App\Filament\Resources\CanalDeDiscussions\Schemas\CanalDeDiscussionForm;
 use App\Filament\Resources\CanalDeDiscussions\Tables\CanalDeDiscussionsTable;
 use App\Models\CanalDeDiscussion;
@@ -35,7 +37,7 @@ class CanalDeDiscussionResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            MessagesRelationManager::class,
         ];
     }
 
@@ -44,6 +46,7 @@ class CanalDeDiscussionResource extends Resource
         return [
             'index' => ListCanalDeDiscussions::route('/'),
             'create' => CreateCanalDeDiscussion::route('/create'),
+            'view' => ViewCanalDeDiscussion::route('/{record}'),
             'edit' => EditCanalDeDiscussion::route('/{record}/edit'),
         ];
     }

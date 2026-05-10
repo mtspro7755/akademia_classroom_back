@@ -19,7 +19,7 @@ class CanalDeDiscussionForm
                     ->default(null)
                     ->columnSpanFull(),
                 Select::make('cohorte_id')
-                    ->relationship('cohorte', 'id')
+                    ->relationship('cohorte', 'nom')
                     ->default(null),
             ]);
     }
