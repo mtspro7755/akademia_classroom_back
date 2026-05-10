@@ -32,4 +32,9 @@ class Cohorte extends Model
     {
         return $this->hasMany(CanalDeDiscussion::class);
     }
+
+    public function paiements(): HasMany
+    {
+        return $this->hasMany(Paiement::class);
+    }
 }
