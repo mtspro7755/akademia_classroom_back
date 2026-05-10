@@ -47,6 +47,7 @@ class CanalDeDiscussionResource extends Resource
     }
 
     public static function getPages(): array
+
     {
         return [
             'index' => ListCanalDeDiscussions::route('/'),
