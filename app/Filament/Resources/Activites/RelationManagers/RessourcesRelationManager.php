@@ -42,7 +42,7 @@ class RessourcesRelationManager extends RelationManager
 
                 TextInput::make('lienRessource')
                     ->label('URL du lien')
-                    ->url()
+                    ->url(fn ($record) => $record->lienRessource)
                     ->nullable()
                     ->visible(fn ($get) => $get('type') === 'lien'),
 
@@ -100,12 +100,12 @@ class RessourcesRelationManager extends RelationManager
                     }),
                 TextColumn::make('lienRessource')
                     ->label('URL du lien')
-                    ->url()
-                    ->visible(fn ($record) => $record->type === 'lien')
+                    ->url(fn ($record) => $record->lienRessource, shouldOpenInNewTab: true)
+                    ->visible(fn ($record) => $record?->type === 'lien')
                     ->toggleable(),
                 TextColumn::make('pdfRessource')
                     ->label('Fichier PDF')
-                    ->visible(fn ($record) => $record->type === 'pdf')
+                    ->visible(fn ($record) => $record?->type === 'pdf')
                     ->toggleable(),
                 TextColumn::make('created_at')
                     ->dateTime()
