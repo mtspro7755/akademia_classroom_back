@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Candidature extends Model
 {
@@ -12,8 +13,13 @@ class Candidature extends Model
         'statut',
     ];
 
-    public function paiement(): HasOne
+    public function apprenant(): BelongsTo
     {
-        return $this->hasOne(Paiement::class);
+        return $this->belongsTo(Apprenant::class);
+    }
+
+    public function paiements(): HasMany
+    {
+        return $this->hasMany(Paiement::class);
     }
 }

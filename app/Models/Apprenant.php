@@ -127,6 +127,11 @@ class Apprenant extends Authenticatable implements JWTSubject, HasName
         return $this->hasMany(Message::class);
     }
 
+    public function candidatures(): HasMany
+    {
+        return $this->hasMany(Candidature::class);
+    }
+
     public function inscrireACohorte($cohorteId)
     {
         $aDejaUneCohorteActive = $this->cohortes()

@@ -16,7 +16,8 @@ class Paiement extends Model
         'statut',
         'datePaiement',
         'apprenant_id',
-        'cohorte_id'
+        'cohorte_id',
+        'candidature_id'
     ];
 
     protected $casts = [
