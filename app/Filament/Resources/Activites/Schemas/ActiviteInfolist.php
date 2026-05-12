@@ -17,14 +17,6 @@ class ActiviteInfolist
                     ->weight('bold')
                     ->color('primary'),
 
-                TextEntry::make('ressources.titre')
-                    ->label('Ressource associée')
-                    ->listWithLineBreaks()
-                    ->bulleted()
-                    ->placeholder('Aucune ressource associée')
-                    ->weight('bold')
-                    ->color('primary'),
-
                 TextEntry::make('titre'),
                 TextEntry::make('description')
                     ->columnSpanFull(),

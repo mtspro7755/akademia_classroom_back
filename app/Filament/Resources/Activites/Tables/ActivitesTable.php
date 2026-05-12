@@ -20,12 +20,6 @@ class ActivitesTable
                     ->searchable(['quetes.titre'])
                     ->sortable(),
 
-                TextColumn::make('ressources.titre')
-                    ->label('Ressource')
-                    ->listWithLineBreaks()
-                    ->bulleted()
-                    ->searchable(['ressources.titre']),
-
                 TextColumn::make('titre')
                     ->searchable(['activites.titre']),
                 TextColumn::make('duree')
