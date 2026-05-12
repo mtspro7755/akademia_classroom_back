@@ -3,7 +3,6 @@
 namespace App\Filament\Resources\Activites\Schemas;
 
 use Filament\Infolists\Components\TextEntry;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class ActiviteInfolist
@@ -12,31 +11,77 @@ class ActiviteInfolist
     {
         return $schema
             ->components([
+                // Informations générales
+                TextEntry::make('quete.parcoursFormation.intitule')
+                    ->label('Parcours de Formation')
+                    ->badge()
+                    ->color('primary'),
+
                 TextEntry::make('quete.titre')
                     ->label('Quête associée')
                     ->weight('bold')
-                    ->color('primary'),
+                    ->color('success'),
 
-                TextEntry::make('titre'),
+                TextEntry::make('titre')
+                    ->label('Activité')
+                    ->formatStateUsing(function (string $state, $record): string {
+                        $typeIcon = $record->typeActivite === 'Veille' ? '🔍' : '🛠️';
+                        return "{$typeIcon} {$state}";
+                    })
+                    ->weight('semibold'),
+
                 TextEntry::make('description')
-                    ->columnSpanFull(),
-                TextEntry::make('duree')
-                    ->numeric(),
-                TextEntry::make('statut'),
-                TextEntry::make('ordreAffichage')
-                    ->numeric(),
+                    ->label('Description')
+                    ->markdown(),
+
+                // Détails de l'activité
                 TextEntry::make('typeActivite')
-                    ->badge(),
-                TextEntry::make('typeLivrable')
-                    ->badge(),
+                    ->label('Type d\'activité')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Veille' => 'info',
+                        'Atelier' => 'warning',
+                    }),
+
+                TextEntry::make('duree')
+                    ->label('Durée (heures)')
+                    ->numeric()
+                    ->suffix(' h'),
+
                 TextEntry::make('modaliteTravail')
                     ->label('Modalité de travail')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'individuel' => 'success',
+                        'collectif' => 'primary',
+                    }),
+
+                TextEntry::make('statut')
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'Brouillon' => 'gray',
+                        'Publié' => 'success',
+                        'Archivé' => 'danger',
+                    }),
+
+                TextEntry::make('ordreAffichage')
+                    ->label('Ordre d\'affichage')
+                    ->numeric(),
+
+                TextEntry::make('typeLivrable')
+                    ->label('Type de livrable')
+                    ->badge()
+                    ->color('secondary'),
+
+                // Métadonnées
                 TextEntry::make('created_at')
-                    ->dateTime()
+                    ->label('Date de création')
+                    ->dateTime('d/m/Y H:i')
                     ->placeholder('-'),
+
                 TextEntry::make('updated_at')
-                    ->dateTime()
+                    ->label('Dernière modification')
+                    ->dateTime('d/m/Y H:i')
                     ->placeholder('-'),
             ]);
     }

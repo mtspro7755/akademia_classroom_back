@@ -18,24 +18,6 @@ class ActiviteForm
     {
         return $schema
             ->components([
-                Select::make('quete_id')
-                    ->label('Quête')
-                    ->relationship('quete', 'titre')
-                    ->searchable(['quetes.titre'])
-                    ->preload()
-                    ->required()
-                    ->options(function (Get $get) {
-                        $parcoursId = $get('parcours_id');
-
-                        if (! $parcoursId) {
-                            return Quete::all()->pluck('titre', 'id');
-                        }
-
-                        return Quete::where('parcours_formation_id', $parcoursId)
-                            ->pluck('titre', 'id');
-                    }),
-
-
                 Select::make('parcours_id')
                     ->label('Parcours de Formation')
 
@@ -52,6 +34,23 @@ class ActiviteForm
                     })
 
                     ->afterStateUpdated(fn (Set $set) => $set('quete_id', null)),
+
+                Select::make('quete_id')
+                    ->label('Quête')
+                    ->relationship('quete', 'titre')
+                    ->searchable(['quetes.titre'])
+                    ->preload()
+                    ->required()
+                    ->options(function (Get $get) {
+                        $parcoursId = $get('parcours_id');
+
+                        if (! $parcoursId) {
+                            return Quete::all()->pluck('titre', 'id');
+                        }
+
+                        return Quete::where('parcours_formation_id', $parcoursId)
+                            ->pluck('titre', 'id');
+                    }),
 
                 TextInput::make('titre')
                     ->required(),
