@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Activites\Schemas;
 
+use App\Models\Activite;
 use App\Models\ParcoursFormation;
 use App\Models\Quete;
 use Filament\Forms\Components\Select;
@@ -17,14 +18,6 @@ class ActiviteForm
     {
         return $schema
             ->components([
-                Select::make('parcours_id')
-                    ->label('Parcours de Formation')
-                    ->options(ParcoursFormation::all()->pluck('intitule', 'id'))
-                    ->searchable()
-                    ->preload()
-                    ->live()
-                    ->afterStateUpdated(fn (Set $set) => $set('quete_id', null)),
-
                 Select::make('quete_id')
                     ->label('Quête')
                     ->relationship('quete', 'titre')
@@ -42,12 +35,23 @@ class ActiviteForm
                             ->pluck('titre', 'id');
                     }),
 
-                Select::make('ressources')
-                    ->relationship('ressources', 'titre')
-                    ->multiple()
+
+                Select::make('parcours_id')
+                    ->label('Parcours de Formation')
+
+                    ->options(ParcoursFormation::pluck('intitule', 'id'))
+                    ->searchable()
                     ->preload()
-                    ->searchable(['ressources.titre'])
-                    ->label('Associer des ressources'),
+                    ->live()
+                    ->required()
+
+                    ->afterStateHydrated(function (Set $set, Get $get, ?Activite $record) {
+                        if ($record && $record->quete) {
+                            $set('parcours_id', $record->quete->parcours_formation_id);
+                        }
+                    })
+
+                    ->afterStateUpdated(fn (Set $set) => $set('quete_id', null)),
 
                 TextInput::make('titre')
                     ->required(),

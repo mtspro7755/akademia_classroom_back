@@ -7,7 +7,6 @@ use App\Filament\Resources\Activites\Pages\EditActivite;
 use App\Filament\Resources\Activites\Pages\ListActivites;
 use App\Filament\Resources\Activites\Pages\ViewActivite;
 use App\Filament\Resources\Activites\RelationManagers\CriteresRelationManager;
-use App\Filament\Resources\Activites\RelationManagers\RessourcesRelationManager;
 use App\Filament\Resources\Activites\Schemas\ActiviteForm;
 use App\Filament\Resources\Activites\Schemas\ActiviteInfolist;
 use App\Filament\Resources\Activites\Tables\ActivitesTable;
@@ -53,8 +52,6 @@ class ActiviteResource extends Resource
         return [
             QuestionsRelationManager::class,
             CriteresRelationManager::class,
-            RessourcesRelationManager::class,
-            QueteRelationManager::class,
 
         ];
     }
