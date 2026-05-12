@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\CohorteController;
 use App\Http\Controllers\FormateurController;
+use App\Http\Controllers\LivrableController;
 use App\Http\Controllers\ParcoursFormationController;
 use App\Http\Controllers\PenaliteController;
 use App\Http\Controllers\PostController;
@@ -105,5 +106,11 @@ Route::middleware('auth:api')->group(function () {
     Route::patch('activites/{activite}/statut', [ActiviteController::class, 'changeStatut']);
 
     Route::get('me/activites', [ActiviteController::class, 'myActivites']);
+
+    // Livrables routes
+    Route::apiResource('livrables', LivrableController::class);
+    Route::get('mes-livrables', [LivrableController::class, 'mesLivrables']);
+    Route::get('activites/{activiteId}/livrables', [LivrableController::class, 'livrablesByActivite']);
+    Route::patch('livrables/{livrable}/statut-correction', [LivrableController::class, 'updateStatutCorrection']);
 
 });
