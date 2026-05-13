@@ -17,14 +17,14 @@ class ActivitesTable
             ->columns([
                 TextColumn::make('quete.parcoursFormation.intitule')
                     ->label('Parcours de Formation')
-                    ->searchable(['parcours_formations.intitule'])
+                    ->searchable(['intitule'])
                     ->sortable()
                     ->badge()
                     ->color('primary'),
 
                 TextColumn::make('quete.titre')
                     ->label('Quête')
-                    ->searchable(['quetes.titre'])
+                    ->searchable(['titre'])
                     ->sortable(),
 
                 TextColumn::make('titre')
@@ -33,7 +33,7 @@ class ActivitesTable
                         $typeIcon = $record->typeActivite === 'Veille' ? '🔍' : '🛠️';
                         return "{$typeIcon} {$state}";
                     })
-                    ->searchable(['activites.titre']),
+                    ->searchable(),
                 TextColumn::make('duree')
                     ->numeric()
                     ->sortable(),
