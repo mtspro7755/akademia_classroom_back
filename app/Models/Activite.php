@@ -25,6 +25,11 @@ class Activite extends Model
         return $this->belongsTo(Quete::class);
     }
 
+    public function parcoursFormation()
+    {
+        return $this->hasOneThrough(ParcoursFormation::class, Quete::class, 'id', 'id', 'quete_id', 'parcours_formation_id');
+    }
+
     public function criteres()
     {
         return $this->hasMany(CritereEvaluation::class);

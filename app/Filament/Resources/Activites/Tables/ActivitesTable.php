@@ -15,12 +15,24 @@ class ActivitesTable
     {
         return $table
             ->columns([
+                TextColumn::make('quete.parcoursFormation.intitule')
+                    ->label('Parcours de Formation')
+                    ->searchable(['parcours_formations.intitule'])
+                    ->sortable()
+                    ->badge()
+                    ->color('primary'),
+
                 TextColumn::make('quete.titre')
                     ->label('Quête')
                     ->searchable(['quetes.titre'])
                     ->sortable(),
 
                 TextColumn::make('titre')
+                    ->label('Activité')
+                    ->formatStateUsing(function (string $state, $record): string {
+                        $typeIcon = $record->typeActivite === 'Veille' ? '🔍' : '🛠️';
+                        return "{$typeIcon} {$state}";
+                    })
                     ->searchable(['activites.titre']),
                 TextColumn::make('duree')
                     ->numeric()
