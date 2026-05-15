@@ -6,6 +6,7 @@ use App\Filament\Resources\GroupeActivites\Pages\CreateGroupeActivite;
 use App\Filament\Resources\GroupeActivites\Pages\EditGroupeActivite;
 use App\Filament\Resources\GroupeActivites\Pages\ListGroupeActivites;
 use App\Filament\Resources\GroupeActivites\Pages\ViewGroupeActivite;
+use App\Filament\Resources\GroupeActivites\RelationManagers\ApprenantsRelationManager;
 use App\Filament\Resources\GroupeActivites\Schemas\GroupeActiviteForm;
 use App\Filament\Resources\GroupeActivites\Schemas\GroupeActiviteInfolist;
 use App\Filament\Resources\GroupeActivites\Tables\GroupeActivitesTable;
@@ -23,6 +24,12 @@ class GroupeActiviteResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'nom';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return 'Suivi';
+    }
+
 
     public static function form(Schema $schema): Schema
     {
@@ -42,7 +49,7 @@ class GroupeActiviteResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ApprenantsRelationManager::class,
         ];
     }
 
