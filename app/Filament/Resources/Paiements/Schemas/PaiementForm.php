@@ -6,6 +6,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Builder;
 
 class PaiementForm
 {
@@ -14,8 +15,23 @@ class PaiementForm
         return $schema
             ->components([
                 Select::make('candidature_id')
-                    ->relationship('candidature', 'statut')
-                    ->nullable(),
+                    ->label('Candidature de l\'apprenant')
+                    ->relationship(
+                        name: 'candidature',
+                        titleAttribute: 'id',
+                        // On utilise 'paiement' au singulier pour correspondre au modèle Candidature
+                        modifyQueryUsing: fn (Builder $query) => $query->whereDoesntHave('paiement')
+                    )
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->apprenant->nomComplet} - Statut: {$record->statut}")
+                    ->searchable()
+                    ->preload()
+                    ->live()
+                    ->required(),
+
+                Select::make('apprenant_id')
+                    ->relationship('apprenant', 'nomComplet')
+                    ->required(),
+
                 TextInput::make('montant')
                     ->required()
                     ->numeric(),
@@ -29,7 +45,8 @@ class PaiementForm
                     ->tel()
                     ->required(),
                 TextInput::make('referenceTransaction')
-                    ->required(),
+                    ->required()
+                    ->unique(ignoreRecord: true),
                 Select::make('statut')
                     ->options([
             'en_attente' => 'En attente',
@@ -40,9 +57,6 @@ class PaiementForm
                     ->default('en_attente')
                     ->required(),
                 DateTimePicker::make('datePaiement'),
-                Select::make('apprenant_id')
-                    ->relationship('apprenant', 'nomComplet')
-                    ->required(),
                 Select::make('cohorte_id')
                     ->relationship('cohorte', 'nom')
                     ->required(),
