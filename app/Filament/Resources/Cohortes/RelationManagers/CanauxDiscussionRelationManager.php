@@ -24,7 +24,6 @@ class CanauxDiscussionRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
                 Textarea::make('description')
-                    ->required()
                     ->rows(3),
             ]);
     }
