@@ -33,6 +33,26 @@ class ParcoursFormationRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('intitule')
                     ->searchable(),
+                TextColumn::make('type')
+                    ->label('Type de parcours')
+                    ->badge()
+                    ->color(fn (string $state): string => match($state) {
+                        'Solo' => 'success',
+                        'Group' => 'info',
+                    })
+                    ->sortable(),
+                TextColumn::make('apprenants_count')
+                    ->label('Apprenants inscrits')
+                    ->sortable(),
+                TextColumn::make('statut')
+                    ->label('Statut du Parcours')
+                    ->badge()
+                    ->color(fn (string $state): string => match($state) {
+                        'Actif' => 'success',
+                        'Inactif' => 'warning',
+                        'Archivé' => 'danger',
+                    })
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

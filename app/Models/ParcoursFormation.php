@@ -10,7 +10,8 @@ class ParcoursFormation extends Model
 {
     protected $fillable = [
         'intitule',
-        'type'
+        'type',
+        'statut'
     ];
 
     public function cohortes(): HasMany
@@ -21,5 +22,13 @@ class ParcoursFormation extends Model
     public function quetes(): HasMany
     {
         return $this->hasMany(Quete::class);
+    }
+
+    public function getApprenantsCountAttribute(): int
+    {
+        return $this->cohortes()
+            ->withCount('apprenants')
+            ->get()
+            ->sum('apprenants_count');
     }
 }
