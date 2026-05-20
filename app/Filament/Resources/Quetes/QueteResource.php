@@ -48,7 +48,6 @@ class QueteResource extends Resource
     public static function getRelations(): array
     {
         return [
-            ParcoursFormationRelationManager::class
         ];
     }
 

@@ -1,57 +1,63 @@
 <?php
 
-namespace App\Filament\Resources\Cohortes\RelationManagers;
+namespace App\Filament\Resources\ParcoursFormations\RelationManagers;
 
+use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DissociateAction;
+use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class ParcoursFormationRelationManager extends RelationManager
+class QuetesRelationManager extends RelationManager
 {
-    protected static string $relationship = 'parcoursFormation';
+    protected static string $relationship = 'quetes';
 
     public function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextInput::make('intitule')
+                TextInput::make('titre')
                     ->required(),
+                Select::make('statut')
+                    ->options(['Actif' => 'Actif', 'Inactif' => 'Inactif'])
+                    ->required(),
+                DatePicker::make('dateDebut')
+                    ->required(),
+                DatePicker::make('dateLimite')
+                    ->required(),
+                TextInput::make('niveauDifficulte')
+                    ->numeric()
+                    ->default(null),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('nom')
+            ->recordTitleAttribute('titre')
             ->columns([
-                TextColumn::make('intitule')
+                TextColumn::make('titre')
                     ->searchable(),
-                TextColumn::make('type')
-                    ->label('Type de parcours')
-                    ->badge()
-                    ->color(fn (string $state): string => match($state) {
-                        'Solo' => 'success',
-                        'Group' => 'info',
-                    })
-                    ->sortable(),
-                TextColumn::make('apprenants_count')
-                    ->label('Apprenants inscrits')
-                    ->sortable(),
                 TextColumn::make('statut')
-                    ->label('Statut du Parcours')
-                    ->badge()
-                    ->color(fn (string $state): string => match($state) {
-                        'Actif' => 'success',
-                        'Inactif' => 'warning',
-                        'Archivé' => 'danger',
-                    })
+                    ->badge(),
+                TextColumn::make('dateDebut')
+                    ->date()
+                    ->sortable(),
+                TextColumn::make('dateLimite')
+                    ->date()
+                    ->sortable(),
+                TextColumn::make('niveauDifficulte')
+                    ->numeric()
                     ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -67,13 +73,16 @@ class ParcoursFormationRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make(),
+                AssociateAction::make(),
             ])
             ->recordActions([
                 EditAction::make(),
+                DissociateAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
+                    DissociateBulkAction::make(),
                     DeleteBulkAction::make(),
                 ]),
             ]);
