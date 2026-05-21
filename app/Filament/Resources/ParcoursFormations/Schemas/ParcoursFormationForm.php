@@ -22,6 +22,15 @@ class ParcoursFormationForm
                     ])
                     ->default('Solo')
                     ->required(),
+                Select::make('statut')
+                    ->label('Statut')
+                    ->options([
+                        'Actif' => 'Actif',
+                        'Inactif' => 'Inactif',
+                        'Archivé' => 'Archivé',
+                    ])
+                    ->default('Actif')
+                    ->required(),
             ]);
     }
 }

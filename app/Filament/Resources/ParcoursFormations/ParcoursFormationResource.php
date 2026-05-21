@@ -6,6 +6,8 @@ use App\Filament\Resources\ParcoursFormations\Pages\CreateParcoursFormation;
 use App\Filament\Resources\ParcoursFormations\Pages\EditParcoursFormation;
 use App\Filament\Resources\ParcoursFormations\Pages\ListParcoursFormations;
 use App\Filament\Resources\ParcoursFormations\Pages\ViewParcoursFormation;
+use App\Filament\Resources\ParcoursFormations\RelationManagers\CohortesRelationManager;
+use App\Filament\Resources\ParcoursFormations\RelationManagers\QuetesRelationManager;
 use App\Filament\Resources\ParcoursFormations\Schemas\ParcoursFormationForm;
 use App\Filament\Resources\ParcoursFormations\Tables\ParcoursFormationsTable;
 use App\Models\ParcoursFormation;
@@ -46,7 +48,8 @@ class ParcoursFormationResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            CohortesRelationManager::class,
+            QuetesRelationManager::class,
         ];
     }
 
