@@ -10,6 +10,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -76,6 +77,8 @@ class QuetesRelationManager extends RelationManager
                 AssociateAction::make(),
             ])
             ->recordActions([
+                ViewAction::make()
+                    ->url(fn ($record): string => route('filament.admin.resources.quetes.view', ['record' => $record])),
                 EditAction::make(),
                 DissociateAction::make(),
                 DeleteAction::make(),
