@@ -11,6 +11,15 @@ class LivrableInfolist
     {
         return $schema
             ->components([
+                TextEntry::make('activite.quete.parcoursFormation.intitule')
+                    ->label('Formation'),
+
+                TextEntry::make('apprenant.cohortes.nom')
+                    ->label('Cohorte'),
+
+                TextEntry::make('activite.quete.titre')
+                    ->label('Quête'),
+
                 TextEntry::make('apprenant.email')
                     ->label('Soumis par (Email)'),
 
