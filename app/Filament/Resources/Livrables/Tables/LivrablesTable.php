@@ -15,6 +15,23 @@ class LivrablesTable
     {
         return $table
             ->columns([
+                TextColumn::make('activite.quete.parcoursFormation.intitule')
+                    ->label('Formation')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
+                TextColumn::make('apprenant.cohortes.nom')
+                    ->label('Cohorte')
+                    ->searchable()
+                    ->toggleable(),
+
+                TextColumn::make('activite.quete.titre')
+                    ->label('Quête')
+                    ->searchable()
+                    ->sortable()
+                    ->toggleable(),
+
                 TextColumn::make('apprenant.email')
                     ->label('Apprenant')
                     ->searchable()
