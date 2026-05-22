@@ -5,10 +5,14 @@ namespace App\Filament\Resources\Livrables\Schemas;
 use App\Models\Activite;
 use App\Models\ParcoursFormation;
 use App\Models\Quete;
+use App\Models\Apprenant;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Closure;
 
 class LivrableForm
 {
@@ -21,23 +25,28 @@ class LivrableForm
                     ->options(ParcoursFormation::all()->pluck('intitule', 'id'))
                     ->searchable()
                     ->live()
-                    ->afterStateUpdated(fn ($set) => $set('quete_id', null)),
+                    ->afterStateUpdated(function ($set) {
+                        $set('quete_id', null);
+                        $set('activite_id', null);
+                        $set('apprenant_id', null);
+                    }),
 
                 Select::make('quete_id')
                     ->label('Quête')
-                    ->options(function ($get) {
+                    ->options(function (Get $get) {
                         $formationId = $get('formation_id');
                         if (!$formationId) return [];
                         return Quete::where('parcours_formation_id', $formationId)->pluck('titre', 'id');
                     })
                     ->live()
                     ->required()
-                    ->afterStateUpdated(fn ($set) => $set('activite_id', null)),
-
+                    ->afterStateUpdated(function ($set) {
+                        $set('activite_id', null);
+                    }),
 
                 Select::make('activite_id')
-                ->label('Activité cible')
-                    ->options(function ($get) {
+                    ->label('Activité cible')
+                    ->options(function (Get $get) { // Typage Get ajouté ici
                         $queteId = $get('quete_id');
                         if (!$queteId) return [];
                         return Activite::where('quete_id', $queteId)->pluck('titre', 'id');
@@ -47,10 +56,36 @@ class LivrableForm
 
                 Select::make('apprenant_id')
                     ->label('Apprenant')
-                    ->relationship('apprenant', 'email')
+                    ->options(function (Get $get) { // Typage Get ajouté ici
+                        $formationId = $get('formation_id');
+
+                        if (!$formationId) {
+                            return [];
+                        }
+
+                        return Apprenant::whereHas('cohortes', function ($query) use ($formationId) {
+                            $query->where('parcours_formation_id', $formationId);
+                        })->pluck('email', 'id'); // Changé en 'email' selon ton schéma d'origine
+                    })
+                    ->disabled(fn (Get $get) => !$get('formation_id'))
                     ->searchable()
-                    ->preload()
-                    ->required(),
+                    ->required()
+                    ->rules([
+                        fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                            $formationId = $get('formation_id');
+                            if (!$formationId) return;
+
+                            $estInscrit = Apprenant::where('id', $value)
+                                ->whereHas('cohortes', function ($query) use ($formationId) {
+                                    $query->where('parcours_formation_id', $formationId);
+                                })->exists();
+
+                            if (!$estInscrit) {
+                                $fail("Erreur d'intégrité : Cet apprenant n'appartient à aucune cohorte de la formation sélectionnée.");
+                            }
+                        },
+                    ]),
+
                 Select::make('typeLivrable')
                     ->options(['Lien' => 'Lien', 'Question' => 'Question'])
                     ->required(),
