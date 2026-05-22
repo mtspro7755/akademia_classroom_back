@@ -9,6 +9,7 @@ use App\Filament\Resources\Cohortes\Pages\ViewCohorte;
 use App\Filament\Resources\Cohortes\RelationManagers\ApprenantsRelationManager;
 use App\Filament\Resources\Cohortes\RelationManagers\CanauxDiscussionRelationManager;
 use App\Filament\Resources\Cohortes\RelationManagers\PaiementsRelationManager;
+use App\Filament\Resources\Cohortes\RelationManagers\LivrablesRelationManager;
 use App\Filament\Resources\Cohortes\Schemas\CohorteForm;
 use App\Filament\Resources\Cohortes\Schemas\CohorteInfolist;
 use App\Filament\Resources\Cohortes\Tables\CohortesTable;
@@ -53,6 +54,7 @@ class CohorteResource extends Resource
             ApprenantsRelationManager::class,
             CanauxDiscussionRelationManager::class,
             PaiementsRelationManager::class,
+            LivrablesRelationManager::class,
         ];
     }
 
